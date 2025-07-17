@@ -11,7 +11,10 @@ export default function LayoutGeral({children}: { children: React.ReactNode }): 
             <AppBar position="static">
                 <Toolbar sx={{display: 'flex', justifyContent: 'space-between'}}>
                     <Typography variant="h6">Meu App</Typography>
-                    <Button variant="outlined" color="inherit" onClick={toggleTheme}>
+                    <Button variant="outlined" color="inherit" onClick={() => {
+                        console.log("Toggle chamado");
+                        toggleTheme();
+                    }}>
                         Tema: {themeMode === 'light' ? 'Claro' : 'Escuro'}
                     </Button>
                 </Toolbar>

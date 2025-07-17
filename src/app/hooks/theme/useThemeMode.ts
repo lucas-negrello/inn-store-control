@@ -1,7 +1,10 @@
 import {useContext} from "react";
 import {ThemeContext} from "@app/contexts/theme/ThemeContext";
-import type {IThemeContext} from "@app/contexts/theme/types.ts";
 
-export const useThemeMode: () => IThemeContext =
-    (): IThemeContext =>
-        useContext(ThemeContext);
+export const useThemeMode = () => {
+    const context = useContext(ThemeContext);
+    if (!context) {
+        throw new Error("useThemeMode must be used within a ThemeProvider");
+    }
+    return context;
+};
