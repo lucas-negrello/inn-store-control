@@ -18,8 +18,8 @@ export const lightTheme: Theme = createTheme({
             contrastText: plt.whitePallete[50],
         },
         background: {
-            default: plt.whitePallete[100],
-            paper: plt.whitePallete[50],
+            default: plt.whitePallete[50],
+            paper: plt.whitePallete[200],
         },
         text: {
             primary: plt.blackPallete[900],

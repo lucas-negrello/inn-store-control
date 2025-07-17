@@ -114,16 +114,16 @@ export const grayPallete: IPallete = {
 
 export const whitePallete: IPallete = {
     50:  '#ffffff',
-    100: '#fdfdfd',
-    200: '#fbfbfb',
-    300: '#f9f9f9',
-    400: '#f7f7f7',
-    500: '#f5f5f5',
-    600: '#f2f2f2',
-    700: '#eeeeee',
-    800: '#ebebeb',
-    900: '#e6e6e6',
-    950: '#e0e0e0'
+    100: '#f8f9fa',
+    200: '#f1f3f4',
+    300: '#e9ecef',
+    400: '#dee2e6',
+    500: '#ced4da',
+    600: '#adb5bd',
+    700: '#868e96',
+    800: '#495057',
+    900: '#343a40',
+    950: '#212529'
 }
 
 export const blackPallete: IPallete = {

@@ -1,4 +1,4 @@
-import LayoutGeral from './layouts/LayoutGeral'
+import LayoutGeral from './layouts/LayoutGeral/Index.tsx'
 import { Typography } from '@mui/material'
 
 export default function App() {
