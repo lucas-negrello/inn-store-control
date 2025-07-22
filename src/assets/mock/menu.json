@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "label": "Dashboard",
+    "route": "",
+    "icon": "dashboard",
+    "isActive": true,
+    "roles": [ "admin", "manager" ]
+  },
+  {
+    "id": 2,
+    "label": "Estoque",
+    "route": "stock",
+    "icon": "inventory",
+    "isActive": true,
+    "roles": [ "admin", "manager" ]
+  },
+  {
+    "id": 3,
+    "label": "Manutenções",
+    "route": "maintenance",
+    "icon": "cogs",
+    "isActive": true,
+    "roles": [ "admin", "manager" ]
+  },
+  {
+    "id": 4,
+    "label": "Mercado",
+    "route": "market",
+    "icon": "shopping-cart",
+    "isActive": true,
+    "roles": [ "admin", "manager" ]
+  },
+  {
+    "id": 5,
+    "label": "Relatórios",
+    "route": "reports",
+    "icon": "bar-chart",
+    "isActive": true,
+    "roles": [ "admin" ]
+  }
+]

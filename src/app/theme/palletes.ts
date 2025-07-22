@@ -1,31 +1,31 @@
 import type {IPallete} from './types.ts';
 
 export const primaryPallete: IPallete = {
-    50: '#f3e5f5',
-    100: '#e1bee7',
-    200: '#ce93d8',
-    300: '#ba68c8',
-    400: '#ab47bc',
-    500: '#9c27b0',
-    600: '#8e24aa',
-    700: '#7b1fa2',
-    800: '#6a1b9a',
-    900: '#4a148c',
-    950: '#38006b'
+    50: '#fbeaec',
+    100: '#f5cfd3',
+    200: '#eea3a9',
+    300: '#e6777f',
+    400: '#dc5a62',
+    500: '#a54d55',
+    600: '#8a4046',
+    700: '#6e3338',
+    800: '#52262a',
+    900: '#36191c',
+    950: '#1a0c0e'
 }
 
 export const secondaryPallete: IPallete = {
-    50: '#cbdfff',
-    100: '#a6c8ff',
-    200: '#7faeff',
-    300: '#5794ff',
-    400: '#2f7aff',
-    500: '#0060ff',
-    600: '#0056e6',
-    700: '#0048b3',
-    800: '#003d99',
-    900: '#002966',
-    950: '#001f4d'
+    50: '#eaf7fb',
+    100: '#cfeaf5',
+    200: '#a9d8ee',
+    300: '#7fc5e6',
+    400: '#62b3dc',
+    500: '#4d9fa5',
+    600: '#408a8a',
+    700: '#33736e',
+    800: '#265252',
+    900: '#193636',
+    950: '#0c1a1a'
 }
 
 export const redPallete: IPallete = {
@@ -139,3 +139,4 @@ export const blackPallete: IPallete = {
     900: '#0f0f0f',
     950: '#030303'
 }
+

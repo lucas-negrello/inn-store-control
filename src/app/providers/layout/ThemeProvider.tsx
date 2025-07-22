@@ -1,11 +1,11 @@
 import {useMemo, useState} from "react";
 import type {IThemeProps} from "./types";
-import type {TTheme} from "@/app/contexts/theme/types";
+import type {TTheme} from "@app/contexts/layout/types";
 import {lightTheme} from "@/app/theme/lightTheme";
 import {darkTheme} from "@/app/theme/darkTheme";
 import {type Theme} from "@emotion/react";
 import {ThemeProvider as MuiThemeProvider, CssBaseline} from "@mui/material";
-import {ThemeContext} from "@app/contexts/theme/ThemeContext";
+import {ThemeContext} from "@app/contexts/layout/ThemeContext";
 
 
 export const ThemeProvider = ({children}: IThemeProps) => {
