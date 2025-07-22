@@ -8,7 +8,7 @@ export const Sidebar = () => {
     const {isSidebarOpen, closeSidebar} = useLayout();
     const [loading, setLoading] = useState<boolean>(true);
     const [sidebarItems, setSidebarItems] = useState<IMenuItem[]>([]);
-    
+
     useEffect(() => {
         MenuService.getMenus()
             .then((res) => setSidebarItems(res.data))

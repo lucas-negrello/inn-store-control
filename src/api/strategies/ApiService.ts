@@ -5,6 +5,7 @@ import {ApiContext} from "@/api/strategies/ApiContext.ts";
 import type {IHttpFacadeOptions} from "@/api/interfaces/HttpFacade.interface.ts";
 import {localStorageService, sessionStorageService, StorageService} from "@/utils/storage/services/StorageService.ts";
 import type {TStorage} from "@/utils/storage/interfaces/Storage.interface.ts";
+import {environment} from "@/environments/environment.ts";
 
 export class HttpFacade<T extends IBaseModel> {
 
@@ -12,10 +13,11 @@ export class HttpFacade<T extends IBaseModel> {
     private readonly _useStorage: boolean;
     private readonly _storageType: TStorage;
     private readonly _storageKey: string;
+    private readonly _cacheTTL?: number;
 
     constructor(
         private readonly _url: string,
-        private readonly _clientType: TClient = "mock",
+        private readonly _clientType: TClient = environment.defaultStrategy,
         private readonly _options?: IHttpFacadeOptions,
     ) {
         const context = new ApiContext<T>(this._clientType);
@@ -24,6 +26,7 @@ export class HttpFacade<T extends IBaseModel> {
         this._useStorage = this._options?.useStorage ?? false;
         this._storageType = this._options?.storageType ?? 'local';
         this._storageKey = this._options?.cacheKey ?? this._url;
+        this._cacheTTL = this._options?.cacheTTL;
     }
 
     getAll(url?: string) {
@@ -74,7 +77,7 @@ export class HttpFacade<T extends IBaseModel> {
         }
 
         return fetchFn().then(res => {
-            if (storage) storage.set(this._storageKey, res);
+            if (storage) storage.set(this._storageKey, res, this._cacheTTL);
             return res;
         })
     }

@@ -13,6 +13,7 @@ export class MockClient<T extends IBaseModel> implements IHttpClientStrategy<T> 
 
     async getAll(url: string): Promise<IApiSuccess<T[]>> {
         const response = await import(`@/assets/mock/${url}.json`);
+        console.log('made mock request');
         return {
             success: true,
             data: response.default as T[],

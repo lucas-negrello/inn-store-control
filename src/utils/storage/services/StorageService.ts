@@ -1,16 +1,30 @@
 import {environment} from "@/environments/environment.ts";
+import type {ICacheItem} from "@/utils/storage/interfaces/Storage.interface.ts";
 
 export class StorageService {
     private _keyPrefix = `${environment.projectName}--`;
     constructor(private _storage: Storage) {}
 
     get<T>(key: string): T | null {
-        const value = this._storage.getItem(`${this._keyPrefix}${key}`);
-        return value ? JSON.parse(value) as T : null;
+        const keyWithPrefix = `${this._keyPrefix}${key}`;
+        const raw = this._storage.getItem(keyWithPrefix);
+        if (!raw) return null;
+
+        try {
+            const parsed = JSON.parse(raw) as ICacheItem<T>;
+            if (parsed.expiresAt < Date.now()) {
+                this.remove(keyWithPrefix);
+                return null;
+            }
+            return parsed.value;
+        } catch {
+            return null;
+        }
     }
 
-    set<T>(key: string, value: T): void {
-        this._storage.setItem(`${this._keyPrefix}${key}`, JSON.stringify(value));
+    set<T>(key: string, value: T, ttl?: number): void {
+        const expiresAt = Date.now() + (ttl ?? 1000 * 60 * 60 * 24 * 7); // Default to 7 days
+        this._storage.setItem(`${this._keyPrefix}${key}`, JSON.stringify({ value, expiresAt }));
     }
 
     remove(key: string): void {
