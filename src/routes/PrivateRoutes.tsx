@@ -1,9 +1,20 @@
 import {Route, Outlet} from "react-router-dom";
 import Fallback from "@/routes/FallbackRoutes.tsx";
-import type {IPrivateRouteProps} from "@/routes/types.ts";
-import LayoutGeral from "@/layouts/LayoutGeral/Index.tsx";
+import LayoutPrivate from "@/layouts/LayoutPrivate/Index.tsx";
 
-function PrivateRoutes({ isAllowed, fallbackProps }: IPrivateRouteProps) {
+type Props =  {
+    isAllowed: boolean;
+    userId?: string;
+    fallbackProps?: FallbackProps;
+}
+
+type FallbackProps =  {
+    route?: string;
+    relative?: 'route' | 'path';
+    replace?: boolean;
+};
+
+function PrivateRoutes({ isAllowed, fallbackProps }: Props) {
     return isAllowed ?
         <Outlet /> :
         <Fallback
@@ -13,13 +24,13 @@ function PrivateRoutes({ isAllowed, fallbackProps }: IPrivateRouteProps) {
         />;
 }
 
-export default function ({isAllowed, userId}: IPrivateRouteProps) {
+export default function ({isAllowed, userId}: Props) {
     return (
         <Route
             path={`/${userId}`}
             element={<PrivateRoutes isAllowed={isAllowed} /> }
         >
-            <Route path='' element={<LayoutGeral />}>
+            <Route path='' element={<LayoutPrivate showMenuButton={true}/>}>
                 <Route index element={<h1>Dashboard</h1>} />
                 <Route path="stock" element={<h1>Stock</h1>} />
                 <Route path="maintenance" element={<h1>Maintenance</h1>} />

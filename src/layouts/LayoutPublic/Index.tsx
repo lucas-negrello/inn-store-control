@@ -1,10 +1,9 @@
 import {Box, Container, type SxProps} from '@mui/material'
-import * as React from "react";
-import type {ReactElement} from "react";
+import  {type ReactElement} from "react";
 import {Outlet} from "react-router-dom";
-import MainHeader from "@/layouts/LayoutGeral/MainHeader";
-import MainFooter from "@/layouts/LayoutGeral/MainFooter.tsx";
-import {Sidebar} from "@/shared/Layout/Menu.tsx";
+import * as React from "react";
+import MainHeader from "@/shared/Layout/MainHeader.tsx";
+import MainFooter from "@/shared/Layout/MainFooter.tsx";
 
 const bodyStyles: SxProps = {
     minHeight: '100vh',
@@ -17,12 +16,10 @@ const mainStyles: SxProps = {
     mt: 4
 };
 
-export default function LayoutGeral(): ReactElement {
-
+export default function LayoutPublic(): ReactElement {
     return (
         <Box sx={bodyStyles}>
-            <MainHeader />
-            <Sidebar />
+            <MainHeader showMenuButton={false} />
 
             <Container component="main" sx={mainStyles}>
                 <Outlet />
@@ -30,5 +27,5 @@ export default function LayoutGeral(): ReactElement {
 
             <MainFooter />
         </Box>
-    )
+    );
 }

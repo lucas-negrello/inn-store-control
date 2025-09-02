@@ -2,7 +2,7 @@ import {AccountCircleRounded, DarkModeRounded, LightModeRounded, Menu} from "@mu
 import {AppBar, Box, type SxProps, Toolbar} from "@mui/material";
 import * as React from "react";
 import {useThemeMode} from "@app/hooks/layout/useThemeMode.ts";
-import {CustomIconButton} from "@/shared/Button/IconButton.tsx";
+import {CustomIconButton} from "@/shared/Button/IconButton/IconButton.tsx";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import logo from '@assets/images/logo.png';
@@ -31,7 +31,11 @@ const logoStyles: SxProps = {
     }
 }
 
-export default function MainHeader() {
+type Props = {
+    showMenuButton?: boolean;
+};
+
+export default function MainHeader({ showMenuButton }: Props) {
     const {themeMode, toggleTheme} = useThemeMode();
     const {toggleSidebar} = useLayout();
 
@@ -45,9 +49,14 @@ export default function MainHeader() {
     return (
         <AppBar sx={appBarStyles}>
             <Toolbar sx={toolbarStyles}>
-                <Box>
-                    <CustomIconButton icon={Menu} color='primary' onClick={toggleSidebar} />
-                </Box>
+                {
+                    showMenuButton ?
+                        <Box>
+                            <CustomIconButton icon={Menu} color='primary' onClick={toggleSidebar} />
+                        </Box>
+                        :
+                        <Box sx={{ width: 40 }} />
+                }
                 <Box
                     component="img"
                     src={logo}

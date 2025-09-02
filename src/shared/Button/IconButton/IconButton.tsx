@@ -1,4 +1,4 @@
-import type {ICustomIconButtonProps} from "@/shared/Button/IconButtonType.ts";
+import type {ICustomIconButtonProps} from "@/shared/Button/IconButton/IconButtonType.ts";
 import {IconButton} from "@mui/material";
 
 export function CustomIconButton(props: ICustomIconButtonProps) {

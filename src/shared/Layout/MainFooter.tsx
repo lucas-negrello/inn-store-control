@@ -1,6 +1,5 @@
 import {Box, type SxProps, Typography} from "@mui/material";
 import * as React from "react";
-import type {IMainFooterProps} from "@/layouts/LayoutGeral/types.ts";
 
 const footerStyles: SxProps = {
     p: 2,
@@ -11,8 +10,11 @@ const footerStyles: SxProps = {
     textAlign: 'center'
 };
 
-export default function MainFooter(props: IMainFooterProps) {
-    const {date} = props;
+type Props =  {
+    date?: string | Date;
+};
+
+export default function MainFooter({ date }: Props) {
 
     const year = date instanceof Date ? date.getFullYear() : date;
     const currentYear = new Date().getFullYear();

@@ -1,12 +1,12 @@
 import {Route} from "react-router-dom";
-import Home from "@/modules/home/pages/Index.tsx";
-import LayoutGeral from "@/layouts/LayoutGeral/Index.tsx";
 import Fallback from "@/routes/FallbackRoutes.tsx";
+import LayoutPublic from "@/layouts/LayoutPublic/Index.tsx";
+import HomePage from "@/pages/public/home/HomePage.tsx";
 
 export default function () {
     return (
-        <Route path='/' element={<LayoutGeral />}>
-            <Route index element={<Home />} />
+        <Route path='/' element={<LayoutPublic />}>
+            <Route index element={<HomePage />} />
             <Route path='*' element={<Fallback /> }  />
         </Route>
     );
