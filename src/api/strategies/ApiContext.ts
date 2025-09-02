@@ -1,11 +1,10 @@
 import type {IHttpClientStrategy} from "@/api/clients/base/HttpClientStrategy.ts";
-import type {IBaseModel} from "@/api/interfaces/ApiResponse.interface.ts";
 import type {TClient} from "@/api/interfaces/Client.interface.ts";
 import {AxiosClient} from "@/api/clients/AxiosClient.ts";
 import {FetchClient} from "@/api/clients/FetchClient.ts";
 import {MockClient} from "@/api/clients/MockClient.ts";
 
-export class ApiContext<T extends IBaseModel> {
+export class ApiContext<T> {
     private _strategy: IHttpClientStrategy<T>;
 
     constructor(clientType: TClient) {

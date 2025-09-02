@@ -1,8 +1,8 @@
 import type {IHttpClientStrategy} from "@/api/clients/base/HttpClientStrategy.ts";
-import type {IApiSuccess, IBaseModel} from "@/api/interfaces/ApiResponse.interface.ts";
+import type {IApiSuccess} from "@/api/interfaces/ApiResponse.interface.ts";
 import axiosInstance from "@/api/config/axios.config.ts";
 
-export class AxiosClient<T extends IBaseModel> implements IHttpClientStrategy<T> {
+export class AxiosClient<T> implements IHttpClientStrategy<T> {
     async post(url: string, payload: T): Promise<IApiSuccess<T>> {
         const response = await axiosInstance.post<IApiSuccess<T>>(url, payload);
         return response.data;

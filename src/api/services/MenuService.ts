@@ -1,7 +1,7 @@
-import {HttpFacade} from "@/api/strategies/ApiService.ts";
+import {CrudFacade} from "@/api/facades/CrudFacade.ts";
 import type {IMenuItem} from "@/api/models/Menu.interface.ts";
 
-const client = new HttpFacade<IMenuItem>('menu', 'mock', {
+const client = new CrudFacade<IMenuItem>('menu', 'mock', {
     storageType: 'session',
     useStorage: true,
 });

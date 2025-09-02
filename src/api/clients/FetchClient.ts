@@ -1,8 +1,8 @@
-import type {IApiSuccess, IBaseModel} from "@/api/interfaces/ApiResponse.interface.ts";
+import type {IApiSuccess} from "@/api/interfaces/ApiResponse.interface.ts";
 import type {IHttpClientStrategy} from "@/api/clients/base/HttpClientStrategy.ts";
 import {fetchConfig} from "@/api/config/fetch.config.ts";
 
-export class FetchClient<T extends IBaseModel> implements IHttpClientStrategy<T> {
+export class FetchClient<T> implements IHttpClientStrategy<T> {
     async post(url: string, payload: T): Promise<IApiSuccess<T>> {
         const response = await fetch(`${fetchConfig.baseUrl}/${url}`, {
             method: "POST",
