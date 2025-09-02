@@ -1,8 +1,9 @@
 import type {FC} from "react";
 import {iconMap, type IconName} from "@/shared/Icon/DynamicIcon/IconMap.ts";
+import type {SvgIconProps} from "@mui/material";
 
 interface DynamicIconProps extends SvgIconProps {
-    iconName: string;
+    iconName?: string;
 }
 
 export const DynamicIcon: FC<DynamicIconProps> = ({ iconName, ...props }) => {

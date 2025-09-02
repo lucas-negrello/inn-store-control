@@ -4,26 +4,25 @@ import LoginPage from "@/pages/auth/login/LoginPage.tsx";
 import {useCallback, useEffect, useState} from "react";
 import type {ILoginCredentials, ILoginResponse} from "@/api/models/Auth.interface.ts";
 import type {IApiSuccess} from "@/api/interfaces/ApiResponse.interface.ts";
+import {useApp} from "@app/hooks/params/useApp.ts";
 
 export default function LoginProvider() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const { login, isAuthenticated, user } = useApp();
     const navigate = useNavigate();
     const location = useLocation();
 
     const redirect = useCallback(() => {
-        const to = location?.state?.from ?? '/';
+        const to = location?.state?.from ?? `/${user?.id}`;
         navigate(to, { replace: true });
-    }, [location?.state?.from, navigate]);
+    }, [location?.state?.from, navigate, user?.id]);
 
     useEffect(() => {
-        let active = true;
-        AuthService.me().then((response) => {
-            if (!active) return;
-            if (response.success) redirect();
-        });
-        return () => { active = false; }
-    }, [redirect]);
+        if (isAuthenticated && user) {
+            redirect()
+        }
+    }, [redirect, isAuthenticated, user]);
 
     const handleSubmit = async (credentials: ILoginCredentials) => {
         setLoading(true);
@@ -32,7 +31,13 @@ export default function LoginProvider() {
         try {
             const response = (await AuthService.login(credentials)) as IApiSuccess<ILoginResponse>;
             if (!response.success) return setError(response.message ?? 'Invalid Credentials');
-            redirect();
+
+            const userResponse = await AuthService.me();
+            if (userResponse.success && userResponse.data) {
+                await login(userResponse.data);
+            } else {
+                setError('Failed to retrieve user data.');
+            }
         } catch {
             setError('Unexpected error occurred. Please try again.');
         } finally {
