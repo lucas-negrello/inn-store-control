@@ -4,6 +4,7 @@ import {Outlet} from "react-router-dom";
 import * as React from "react";
 import MainHeader from "@/shared/Layout/Header/MainHeader.tsx";
 import MainFooter from "@/shared/Layout/Footer/MainFooter.tsx";
+import {DebugInfo} from "@/utils/debug/DebugInfo.tsx";
 
 const bodyStyles: SxProps = {
     minHeight: '100vh',
@@ -26,6 +27,7 @@ export default function LayoutPublic(): ReactElement {
             </Container>
 
             <MainFooter />
+            <DebugInfo />
         </Box>
     );
 }

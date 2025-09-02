@@ -1,6 +1,7 @@
 import {Box, Container, type SxProps} from "@mui/material";
 import {Outlet} from "react-router-dom";
 import type {ReactElement} from "react";
+import {DebugInfo} from "@/utils/debug/DebugInfo.tsx";
 
 const bodyStyles: SxProps = {
     minHeight: '100vh',
@@ -23,6 +24,7 @@ export default function(): ReactElement {
                     <Outlet />
                 </Box>
             </Container>
+            <DebugInfo />
         </Box>
     );
 }

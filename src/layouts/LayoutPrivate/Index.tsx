@@ -5,6 +5,7 @@ import {Outlet} from "react-router-dom";
 import MainHeader from "@/shared/Layout/Header/MainHeader.tsx";
 import MainFooter from "@/shared/Layout/Footer/MainFooter.tsx";
 import {Sidebar} from "@/shared/Layout/Sidebar/Sidebar.tsx";
+import {DebugInfo} from "@/utils/debug/DebugInfo.tsx";
 
 const bodyStyles: SxProps = {
     minHeight: '100vh',
@@ -36,6 +37,7 @@ export default function LayoutPrivate({ showMenuButton, onLogoClickRoute }: Prop
             </Container>
 
             <MainFooter />
+            <DebugInfo />
         </Box>
     )
 }

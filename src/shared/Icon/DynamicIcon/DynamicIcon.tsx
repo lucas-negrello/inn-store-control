@@ -7,12 +7,18 @@ interface DynamicIconProps extends SvgIconProps {
 }
 
 export const DynamicIcon: FC<DynamicIconProps> = ({ iconName, ...props }) => {
-    const IconComponent = iconMap[iconName as IconName];
+    try {
+        const IconComponent = iconMap[iconName as IconName];
 
-    if (!IconComponent) {
+        if (!IconComponent) {
+            const DefaultIcon = iconMap.Help;
+            return <DefaultIcon {...props} />;
+        }
+
+        return <IconComponent {...props} />;
+    } catch (error) {
+        console.error(`Error rendering icon "${iconName}":`, error);
         const DefaultIcon = iconMap.Help;
         return <DefaultIcon {...props} />;
     }
-
-    return <IconComponent {...props} />;
 }

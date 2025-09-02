@@ -5,7 +5,18 @@
     "route": "",
     "icon": "Dashboard",
     "isActive": true,
-    "roles": [ "admin", "manager" ]
+    "roles": [
+      {
+        "id": 1,
+        "name": "admin",
+        "permissions": ["create", "read", "update", "delete"]
+      },
+      {
+          "id": 2,
+          "name": "manager",
+          "permissions": ["create", "read", "update"]
+      }
+    ]
   },
   {
     "id": 2,
@@ -13,7 +24,18 @@
     "route": "stock",
     "icon": "Inventory",
     "isActive": true,
-    "roles": [ "admin", "manager" ]
+    "roles": [
+      {
+        "id": 1,
+        "name": "admin",
+        "permissions": ["create", "read", "update", "delete"]
+      },
+      {
+        "id": 2,
+        "name": "manager",
+        "permissions": ["create", "read", "update"]
+      }
+    ]
   },
   {
     "id": 3,
@@ -21,7 +43,18 @@
     "route": "maintenance",
     "icon": "Settings",
     "isActive": true,
-    "roles": [ "admin", "manager" ]
+    "roles": [
+      {
+        "id": 1,
+        "name": "admin",
+        "permissions": ["create", "read", "update", "delete"]
+      },
+      {
+        "id": 2,
+        "name": "manager",
+        "permissions": ["create", "read", "update"]
+      }
+    ]
   },
   {
     "id": 4,
@@ -29,7 +62,18 @@
     "route": "market",
     "icon": "LocalGroceryStore",
     "isActive": true,
-    "roles": [ "admin", "manager" ]
+    "roles": [
+      {
+        "id": 1,
+        "name": "admin",
+        "permissions": ["create", "read", "update", "delete"]
+      },
+      {
+        "id": 2,
+        "name": "manager",
+        "permissions": ["create", "read", "update"]
+      }
+    ]
   },
   {
     "id": 5,
@@ -37,6 +81,12 @@
     "route": "reports",
     "icon": "BarChart",
     "isActive": true,
-    "roles": [ "admin" ]
+    "roles": [
+      {
+        "id": 1,
+        "name": "admin",
+        "permissions": ["create", "read", "update", "delete"]
+      }
+    ]
   }
 ]

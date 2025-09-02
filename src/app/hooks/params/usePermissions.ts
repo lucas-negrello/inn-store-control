@@ -1,6 +1,6 @@
 import {useApp} from "@app/hooks/params/useApp.ts";
 import type {IPermissionContext} from "@app/contexts/params/types.ts";
-import {useMemo} from "react";
+import {useCallback, useMemo} from "react";
 import type {TPermission} from "@/api/models/Permissions.interface.ts";
 
 export const usePermissions = (): IPermissionContext => {
@@ -9,58 +9,74 @@ export const usePermissions = (): IPermissionContext => {
     const userPermissions = useMemo(() => {
         if (!user || !isAuthenticated) return [];
 
-        const directPermissions = user.permissions || [];
-        const rolePermissions = user.roles?.flatMap(role => role.permissions) || [];
+        try {
+            const directPermissions = user.permissions || [];
+            const rolePermissions = user.roles?.flatMap(role => role.permissions || []) || [];
 
-        return [...new Set([...directPermissions, ...rolePermissions])];
+            return [...new Set([...directPermissions, ...rolePermissions])];
+        } catch (error) {
+            console.error('Erro ao Processar permissões do usuário:', error);
+            return [];
+        }
     }, [user, isAuthenticated]);
 
     const userRoles = useMemo(() => {
         if (!user || !isAuthenticated) return [];
-        return user.roles?.flatMap(role => role.name) || [];
+
+        try {
+            return user.roles?.flatMap(role => role.name) || [];
+        } catch (error) {
+            console.error('Erro ao Processar regras do usuário:', error);
+            return [];
+        }
     }, [user, isAuthenticated]);
 
-    const hasPermission = (permission: TPermission) => {
+    const hasPermission = useCallback((permission: TPermission) => {
         if (!user || !isAuthenticated) return false;
         return userPermissions.includes(permission);
-    }
+    }, [isAuthenticated, userPermissions, user]);
 
-    const hasRole = (roleName: string) => {
+    const hasRole = useCallback((roleName: string) => {
         if (!user || !isAuthenticated) return false;
         return userRoles?.includes(roleName);
-    }
+    }, [isAuthenticated, userRoles, user]);
 
-    const hasAnyRole = (rolesNames: string[]) => {
+    const hasAnyRole = useCallback((rolesNames: string[]) => {
         if (!user || !isAuthenticated) return false;
         return rolesNames.some(roleName => userRoles.includes(roleName));
-    }
+    }, [isAuthenticated, userRoles, user]);
 
-    const hasAllRoles = (roleNames: string[]) => {
-        if (!user || !isAuthenticated) return false;
+    const hasAllRoles = useCallback((roleNames: string[]) => {
+        if (!user || !isAuthenticated || !roleNames?.length) return true;
         return roleNames.every(roleName => userRoles.includes(roleName));
-    }
+    }, [isAuthenticated, userRoles, user]);
 
-    const hasAnyPermission = (permissions: TPermission[]) => {
+    const hasAnyPermission = useCallback((permissions: TPermission[]) => {
         if (!user || !isAuthenticated) return false;
         return permissions.some(permission => userPermissions.includes(permission));
-    }
+    }, [isAuthenticated, userPermissions, user]);
 
-    const hasAllPermissions = (permissions: TPermission[]) => {
-        if (!user || !isAuthenticated) return false;
+    const hasAllPermissions = useCallback((permissions: TPermission[]) => {
+        if (!user || !isAuthenticated || !permissions?.length) return true;
         return permissions.every(permission => userPermissions.includes(permission));
-    }
+    }, [isAuthenticated, userPermissions, user]);
 
-    const canAccessRoute = (requiredRoles?: string[], requiredPermissions?: TPermission[]) => {
+    const canAccessRoute = useCallback((requiredRoles?: string[], requiredPermissions?: TPermission[]) => {
         if (!user || !isAuthenticated) return false;
 
         if (!requiredRoles?.length && !requiredPermissions?.length) return true;
 
-        const hasRequiredRoles = !requiredRoles?.length || hasAnyRole(requiredRoles);
+        try {
+            const hasRequiredRoles = !requiredRoles?.length || hasAnyRole(requiredRoles);
 
-        const hasRequiredPermissions = !requiredPermissions?.length || hasAnyPermission(requiredPermissions);
+            const hasRequiredPermissions = !requiredPermissions?.length || hasAnyPermission(requiredPermissions);
 
-        return hasRequiredRoles && hasRequiredPermissions;
-    }
+            return hasRequiredRoles && hasRequiredPermissions;
+        } catch (error) {
+            console.error('Erro ao verificar acesso à rota:', error);
+            return false;
+        }
+    }, [isAuthenticated, hasAnyRole, hasAnyPermission, user]);
 
     return {
         hasPermission,

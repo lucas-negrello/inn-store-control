@@ -4,6 +4,7 @@ import type {IMenuItem} from "@/api/models/Menu.interface.ts";
 const client = new CrudFacade<IMenuItem>('menu', 'mock', {
     storageType: 'session',
     useStorage: true,
+    cacheTTL: 60*60, // 1 hour
 });
 
 export const MenuService = {
