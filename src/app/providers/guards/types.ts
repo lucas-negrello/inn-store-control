@@ -1,11 +1,10 @@
 import type {ReactNode} from "react";
 import type {TPermission} from "@/api/models/Permissions.interface.ts";
 
-export interface IProtectedRouteProps {
+export interface IPermissionGuardProps {
     children: ReactNode;
-    requireAuth?: boolean;
     roles?: string[];
     permissions?: TPermission[];
     requireAll?: boolean;
-    fallbackRoute?: ReactNode;
+    fallback?: ReactNode;
 }

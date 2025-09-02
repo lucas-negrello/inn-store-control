@@ -4,7 +4,7 @@ import type {ReactElement} from "react";
 import {Outlet} from "react-router-dom";
 import MainHeader from "@/shared/Layout/Header/MainHeader.tsx";
 import MainFooter from "@/shared/Layout/Footer/MainFooter.tsx";
-import {Sidebar} from "@/shared/Layout/Menu/Menu.tsx";
+import {Sidebar} from "@/shared/Layout/Sidebar/Sidebar.tsx";
 
 const bodyStyles: SxProps = {
     minHeight: '100vh',

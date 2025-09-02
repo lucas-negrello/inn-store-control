@@ -6,6 +6,7 @@ import {useLayout} from "@app/hooks/layout/useLayout.ts";
 import {useNavigate} from "react-router-dom";
 import {DynamicIcon} from "@/shared/Icon/DynamicIcon/DynamicIcon.tsx";
 import {useApp} from "@app/hooks/params/useApp.ts";
+import {usePermissions} from "@app/hooks/params/usePermissions.ts";
 
 const menuStyles: SxProps = {
     cursor: 'pointer',
@@ -21,16 +22,30 @@ const menuStyles: SxProps = {
 export const Sidebar = () => {
     const {isSidebarOpen, closeSidebar} = useLayout();
     const {userId} = useApp();
+    const {canAccessRoute} = usePermissions();
     const [loading, setLoading] = useState<boolean>(true);
     const [sidebarItems, setSidebarItems] = useState<IMenuItem[]>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         MenuService.getMenus()
-            .then((res) => setSidebarItems(res.data))
-            .catch((err) => console.log(err))
+            .then((res) => {
+                if (!res.success) {
+                    setSidebarItems([]);
+                    return res;
+                }
+                const filteredItems = res.data.filter((item: IMenuItem) => {
+                    if (!item.isActive) return false;
+                    return canAccessRoute(item.roles.flatMap(i => i.name), item.permissions);
+                });
+                setSidebarItems(filteredItems);
+            })
+            .catch((err) => {
+                console.log(err);
+                setSidebarItems([]);
+            })
             .finally(() => setLoading(false));
-    }, []);
+    }, [canAccessRoute]);
 
     const handleNavigation = (route: string) => {
         if (!userId) {

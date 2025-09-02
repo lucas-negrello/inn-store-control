@@ -20,10 +20,31 @@ export default function () {
         >
             <Route path='' element={<LayoutPrivate onLogoClickRoute={`/`} showMenuButton={true}/>}>
                 <Route index element={<DashboardPage />} />
-                <Route path="stock" element={<StockPage />} />
-                <Route path="maintenance" element={<MaintenancePage />} />
-                <Route path="market" element={<MarketPage />} />
-                <Route path="reports" element={<ReportsPage />} />
+
+                <Route path="stock" element={
+                    <ProtectedRouteProvider roles={['admin', 'manager']}>
+                        <StockPage />
+                    </ProtectedRouteProvider>
+                } />
+
+                <Route path="maintenance" element={
+                    <ProtectedRouteProvider roles={['admin', 'manager']}>
+                        <MaintenancePage />
+                    </ProtectedRouteProvider>
+                } />
+
+                <Route path="market" element={
+                    <ProtectedRouteProvider roles={['admin', 'manager']}>
+                        <MarketPage />
+                    </ProtectedRouteProvider>
+                } />
+
+                <Route path="reports" element={
+                    <ProtectedRouteProvider roles={['admin']}>
+                        <ReportsPage />
+                    </ProtectedRouteProvider>
+                } />
+
                 <Route path="*" element={<Fallback route={`/`} replace={false} /> } />
             </Route>
         </Route>
