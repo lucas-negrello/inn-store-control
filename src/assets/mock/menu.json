@@ -3,7 +3,7 @@
     "id": 1,
     "label": "Dashboard",
     "route": "",
-    "icon": "dashboard",
+    "icon": "Dashboard",
     "isActive": true,
     "roles": [ "admin", "manager" ]
   },
@@ -11,7 +11,7 @@
     "id": 2,
     "label": "Estoque",
     "route": "stock",
-    "icon": "inventory",
+    "icon": "Inventory",
     "isActive": true,
     "roles": [ "admin", "manager" ]
   },
@@ -19,7 +19,7 @@
     "id": 3,
     "label": "Manutenções",
     "route": "maintenance",
-    "icon": "cogs",
+    "icon": "Settings",
     "isActive": true,
     "roles": [ "admin", "manager" ]
   },
@@ -27,7 +27,7 @@
     "id": 4,
     "label": "Mercado",
     "route": "market",
-    "icon": "shopping-cart",
+    "icon": "LocalGroceryStore",
     "isActive": true,
     "roles": [ "admin", "manager" ]
   },
@@ -35,7 +35,7 @@
     "id": 5,
     "label": "Relatórios",
     "route": "reports",
-    "icon": "bar-chart",
+    "icon": "BarChart",
     "isActive": true,
     "roles": [ "admin" ]
   }

@@ -7,6 +7,7 @@ import {CustomIconButton} from "@/shared/Button/IconButton/IconButton.tsx";
 // @ts-expect-error
 import logo from '@assets/images/logo.png';
 import {useLayout} from "@app/hooks/layout/useLayout.ts";
+import {useNavigate} from "react-router-dom";
 
 const appBarStyles: SxProps = {
     bgcolor: 'background.paper',
@@ -25,6 +26,7 @@ const logoStyles: SxProps = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    cursor: 'pointer',
     '& img': {
         height: '100%',
         width: 'auto'
@@ -33,17 +35,19 @@ const logoStyles: SxProps = {
 
 type Props = {
     showMenuButton?: boolean;
+    onLogoClickRoute?: string;
 };
 
-export default function MainHeader({ showMenuButton }: Props) {
+export default function MainHeader({ showMenuButton, onLogoClickRoute }: Props) {
     const {themeMode, toggleTheme} = useThemeMode();
     const {toggleSidebar} = useLayout();
+    const navigate = useNavigate();
 
     const isLight = themeMode === "light";
     const Icon = isLight ? DarkModeRounded : LightModeRounded;
 
-    const navigateToMain = () => {
-        console.log()
+    const handleLogoClick = () => {
+        navigate(onLogoClickRoute || '/');
     };
 
     return (
@@ -61,7 +65,7 @@ export default function MainHeader({ showMenuButton }: Props) {
                     component="img"
                     src={logo}
                     alt="Microondas Caxias"
-                    onClick={navigateToMain}
+                    onClick={handleLogoClick}
                     sx={logoStyles} />
                 <Box>
                     <CustomIconButton icon={Icon} color='primary' onClick={toggleTheme} />

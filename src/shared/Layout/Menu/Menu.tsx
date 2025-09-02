@@ -1,8 +1,11 @@
 import {useEffect, useState} from "react";
 import type {IMenuItem} from "@/api/models/Menu.interface.ts";
 import {MenuService} from "@/api/services/MenuService.ts";
-import {Drawer, List, ListItem, ListItemText, type SxProps} from "@mui/material";
+import {Drawer, List, ListItem, ListItemIcon, ListItemText, type SxProps} from "@mui/material";
 import {useLayout} from "@app/hooks/layout/useLayout.ts";
+import {useNavigate} from "react-router-dom";
+import {DynamicIcon} from "@/shared/Icon/DynamicIcon/DynamicIcon.tsx";
+import {useApp} from "@app/hooks/params/useApp.ts";
 
 const menuStyles: SxProps = {
     cursor: 'pointer',
@@ -14,10 +17,13 @@ const menuStyles: SxProps = {
     },
 };
 
+
 export const Sidebar = () => {
     const {isSidebarOpen, closeSidebar} = useLayout();
+    const {userId} = useApp();
     const [loading, setLoading] = useState<boolean>(true);
     const [sidebarItems, setSidebarItems] = useState<IMenuItem[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         MenuService.getMenus()
@@ -25,6 +31,17 @@ export const Sidebar = () => {
             .catch((err) => console.log(err))
             .finally(() => setLoading(false));
     }, []);
+
+    const handleNavigation = (route: string) => {
+        if (!userId) {
+            navigate('/');
+            closeSidebar();
+            return;
+        }
+        const path = route === '' ? `/${userId}` : `/${userId}/${route}`;
+        navigate(path);
+        closeSidebar();
+    };
 
     return (
         <Drawer open={isSidebarOpen} onClick={closeSidebar}>
@@ -35,7 +52,10 @@ export const Sidebar = () => {
                 (
                     <List sx={{width: 250}}>
                         {sidebarItems.map((item) => (
-                            <ListItem sx={menuStyles} key={item.id} onClick={closeSidebar}>
+                            <ListItem sx={menuStyles} key={item.id} onClick={() => handleNavigation(item.route)}>
+                                <ListItemIcon>
+                                    <DynamicIcon iconName={item.icon} />
+                                </ListItemIcon>
                                 <ListItemText primary={item.label} />
                             </ListItem>
                         ))}
