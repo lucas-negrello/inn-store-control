@@ -11,10 +11,10 @@ export default function () {
                 <LayoutAuth />
             </ProtectedRouteProvider>
         }>
-            <Route index element={<Fallback route={'/auth/login'} />} />
+            <Route index element={<Fallback route={'/'} replace={true} />} />
             <Route path='login' element={<LoginProvider />} />
-            <Route path='register' element={<h1>Register</h1>} />
-            <Route path='forgot-password' element={<h1>Forgot Password</h1>} />
+            <Route path='register' element={<div>Página de Registro - Em Desenvolvimento</div>} />
+            <Route path='forgot-password' element={<div>Esqueci a Senha - Em Desenvolvimento</div>} />
             <Route path='*' element={<Fallback /> }  />
         </Route>
     )

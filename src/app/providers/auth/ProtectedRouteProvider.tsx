@@ -27,7 +27,7 @@ export const ProtectedRouteProvider: FC<IProtectedRouteProps> = ({
 
     if (requireAuth && !isAuthenticated) {
         return (
-            <Navigate to="/auth/login"
+            <Navigate to="/"
                       state={{ from: location.pathname }}
                       replace />
         );

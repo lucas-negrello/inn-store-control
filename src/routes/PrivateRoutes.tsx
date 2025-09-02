@@ -7,6 +7,7 @@ import MaintenancePage from "@/pages/private/maintenance/MaintenancePage.tsx";
 import MarketPage from "@/pages/private/market/MarketPage.tsx";
 import ReportsPage from "@/pages/private/reports/ReportsPage.tsx";
 import {ProtectedRouteProvider} from "@app/providers/auth/ProtectedRouteProvider.tsx";
+import AccountPage from "@/pages/private/account/AccountPage.tsx";
 
 
 export default function () {
@@ -18,8 +19,10 @@ export default function () {
                     <Outlet />
                 </ProtectedRouteProvider> }
         >
-            <Route path='' element={<LayoutPrivate onLogoClickRoute={`/`} showMenuButton={true}/>}>
+            <Route path='' element={<LayoutPrivate showMenuButton={true}/>}>
                 <Route index element={<DashboardPage />} />
+
+                <Route path="account" element={<AccountPage />} />
 
                 <Route path="stock" element={
                     <ProtectedRouteProvider roles={['admin', 'manager']}>

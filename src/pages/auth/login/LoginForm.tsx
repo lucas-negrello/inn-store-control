@@ -15,7 +15,7 @@ export default function LoginForm({ onSubmit, loading, error }: Props) {
         handleSubmit,
         formState: { errors, isSubmitting, isValid, isDirty }
     } = useForm<ILoginCredentials>({
-        mode: 'onBlur',
+        mode: 'onChange',
         defaultValues: {
             email: '',
             password: ''

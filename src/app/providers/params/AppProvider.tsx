@@ -82,7 +82,7 @@ export const AppProvider = ({ children }: IAppProps) => {
             setUserId(undefined);
             setUser(undefined);
             setIsAuthenticated(false);
-            navigate('/auth/login', { replace: true });
+            navigate('/', { replace: true });
         }
     };
 

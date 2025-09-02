@@ -8,6 +8,8 @@ import {CustomIconButton} from "@/shared/Button/IconButton/IconButton.tsx";
 import logo from '@assets/images/logo.png';
 import {useLayout} from "@app/hooks/layout/useLayout.ts";
 import {useNavigate} from "react-router-dom";
+import {UserDropdownMenuButton} from "@/shared/Layout/Dropdown/UserDropdown.tsx";
+import {useApp} from "@app/hooks/params/useApp.ts";
 
 const appBarStyles: SxProps = {
     bgcolor: 'background.paper',
@@ -35,19 +37,19 @@ const logoStyles: SxProps = {
 
 type Props = {
     showMenuButton?: boolean;
-    onLogoClickRoute?: string;
 };
 
-export default function MainHeader({ showMenuButton, onLogoClickRoute }: Props) {
+export default function MainHeader({ showMenuButton }: Props) {
     const {themeMode, toggleTheme} = useThemeMode();
     const {toggleSidebar} = useLayout();
+    const {userId} = useApp();
     const navigate = useNavigate();
 
     const isLight = themeMode === "light";
     const Icon = isLight ? DarkModeRounded : LightModeRounded;
 
     const handleLogoClick = () => {
-        navigate(onLogoClickRoute || '/');
+        return userId ? navigate( `/${userId}`) : navigate('/');
     };
 
     return (
@@ -69,7 +71,7 @@ export default function MainHeader({ showMenuButton, onLogoClickRoute }: Props) 
                     sx={logoStyles} />
                 <Box>
                     <CustomIconButton icon={Icon} color='primary' onClick={toggleTheme} />
-                    <CustomIconButton icon={AccountCircleRounded} color='primary' />
+                    <UserDropdownMenuButton />
                 </Box>
             </Toolbar>
         </AppBar>
