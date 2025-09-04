@@ -17,3 +17,7 @@ export interface IBaseModel {
     created_at?: string;
     updated_at?: string;
 }
+
+export interface ISoftDeleteModel extends IBaseModel {
+    deleted_at?: string;
+}

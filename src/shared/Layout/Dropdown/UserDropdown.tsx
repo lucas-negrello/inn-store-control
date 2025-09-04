@@ -1,7 +1,17 @@
 import React, {type FC, useState} from "react";
 import {useApp} from "@app/hooks/params/useApp.ts";
 import {useNavigate} from "react-router-dom";
-import {Avatar, Box, Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography} from "@mui/material";
+import {
+    Avatar,
+    Box,
+    Divider,
+    IconButton,
+    ListItemIcon,
+    ListItemText,
+    Menu,
+    MenuItem, type SxProps,
+    Typography
+} from "@mui/material";
 import {AccountCircle, Login, Logout, PersonAdd, Settings} from "@mui/icons-material";
 import Grid from "@mui/material/Grid";
 
@@ -9,6 +19,17 @@ type UserDropdownProps = {
     anchorEl: HTMLElement | null;
     open: boolean;
     onClose: () => void;
+}
+
+const slotProps = {
+    paper: {
+        elevation: 3,
+        sx: {
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            minWidth: 200
+        }
+    }
 }
 
 export const UserDropdownMenuButton: FC = () => {
@@ -90,29 +111,7 @@ export const UserDropdown: FC<UserDropdownProps> = ({ anchorEl, open, onClose })
             onClick={onClose}
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-            slotProps={{
-                paper: {
-                    elevation: 3,
-                    sx: {
-                        overflow: 'visible',
-                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                        mt: 1.5,
-                        minWidth: 200,
-                        '&:before': {
-                            content: '""',
-                            display: 'block',
-                            position: 'absolute',
-                            top: 0,
-                            right: 14,
-                            width: 10,
-                            height: 10,
-                            bgcolor: 'background.paper',
-                            transform: 'translateY(-50%) rotate(45deg)',
-                            zIndex: 0,
-                        }
-                    }
-                }
-            }}
+            slotProps={slotProps}
         >
             {isAuthenticated && user ? (
                 <Grid>

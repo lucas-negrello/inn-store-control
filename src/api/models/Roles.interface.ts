@@ -5,5 +5,7 @@ export type TRoles = IRole[];
 
 export interface IRole extends IBaseModel {
     name: string;
-    permissions: TPermission[];
+    slug: string;
+    description?: string;
+    permissions?: TPermission[];
 }

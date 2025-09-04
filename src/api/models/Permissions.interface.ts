@@ -6,3 +6,11 @@ export const CPermission = {
     update: 'update',
     delete: 'delete',
 } as const;
+
+export interface IPermission {
+    id?: number | string;
+    key: string;
+    description?: string;
+    created_at?: string; // ISO
+    updated_at?: string; // ISO
+}
