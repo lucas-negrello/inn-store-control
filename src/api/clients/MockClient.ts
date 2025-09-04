@@ -80,10 +80,10 @@ export class MockClient<T> implements IHttpClientStrategy<T> {
         }
     }
 
-    async update(url: string, id: number | string, payload: T): Promise<IApiSuccess<T>> {
+    async update(url: string, id: number | string, payload: Partial<T>): Promise<IApiSuccess<T>> {
         return {
             success: true,
-            data: payload,
+            data: payload as T,
             message: "Mock UPDATE request successful",
             code: 200
         }

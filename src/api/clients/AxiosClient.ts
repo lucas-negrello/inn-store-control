@@ -15,7 +15,7 @@ export class AxiosClient<T> implements IHttpClientStrategy<T> {
         const response = await axiosInstance.get<IApiSuccess<T>>(`${url}/${id}`);
         return response.data;
     }
-    async update(url: string, id: number | string, payload: T): Promise<IApiSuccess<T>> {
+    async update(url: string, id: number | string, payload: Partial<T>): Promise<IApiSuccess<T>> {
         const response = await axiosInstance.put<IApiSuccess<T>>(`${url}/${id}`, payload);
         return response.data;
     }

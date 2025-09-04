@@ -3,6 +3,7 @@ import type {TClient} from "@/api/interfaces/Client.interface.ts";
 import type {IHttpFacadeOptions} from "@/api/interfaces/HttpFacade.interface.ts";
 import {environment} from "@/environments/environment.ts";
 import {HttpFacade} from "@/api/facades/base/HttpFacade.ts";
+import type {LocalClientStrategy} from "@/api/clients/base/LocalClientStrategy.ts";
 
 export class CrudFacade<T extends IBaseModel> extends HttpFacade<T>{
 
@@ -10,8 +11,9 @@ export class CrudFacade<T extends IBaseModel> extends HttpFacade<T>{
         url: string,
         clientType: TClient = environment.defaultStrategy,
         options?: IHttpFacadeOptions,
+        localClientStrategy?: LocalClientStrategy<T>
     ) {
-        super(url, clientType, options);
+        super(url, clientType, options, localClientStrategy);
     }
 
     getAll =

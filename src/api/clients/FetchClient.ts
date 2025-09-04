@@ -31,7 +31,7 @@ export class FetchClient<T> implements IHttpClientStrategy<T> {
         return fetchConfig.handleResponse<IApiSuccess<T>>(response);
     }
 
-    async update(url: string, id: number | string, payload: T): Promise<IApiSuccess<T>> {
+    async update(url: string, id: number | string, payload: Partial<T>): Promise<IApiSuccess<T>> {
         const response = await fetch(`${fetchConfig.baseUrl}/${url}/${id}`, {
             method: "PUT",
             headers: fetchConfig.getAuthHeaders(),

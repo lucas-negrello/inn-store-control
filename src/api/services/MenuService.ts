@@ -1,11 +1,12 @@
-import {CrudFacade} from "@/api/facades/CrudFacade.ts";
 import type {IMenuItem} from "@/api/models/Menu.interface.ts";
+import {MenusClientLocal} from "@/api/clients/local";
+import {MenuFacade} from "@/api/facades/MenuFacade.ts";
 
-const client = new CrudFacade<IMenuItem>('menu', 'mock', {
+const client = new MenuFacade('menu', 'local', {
     storageType: 'session',
     useStorage: true,
     cacheTTL: 60*60, // 1 hour
-});
+}, new MenusClientLocal);
 
 export const MenuService = {
     getMenus: () => client.getAll(),

@@ -9,6 +9,8 @@ import {
     sessionStorageService,
     type StorageService
 } from "@/utils/storage/services/StorageService.ts";
+import {Env} from "@/config/env.ts";
+import type {LocalClientStrategy} from "@/api/clients/base/LocalClientStrategy.ts";
 
 export abstract class HttpFacade<T> {
     protected readonly _client: IHttpClientStrategy<T>;
@@ -19,10 +21,11 @@ export abstract class HttpFacade<T> {
 
     protected constructor(
         protected readonly _url: string,
-        protected readonly _clientType: TClient = environment.defaultStrategy,
+        protected readonly _clientType: TClient = Env.defaultStrategy,
         protected readonly _options?: IHttpFacadeOptions,
+        protected readonly _localClientStrategy?: LocalClientStrategy<T>
     ) {
-        const context = new ApiContext<T>(this._clientType);
+        const context = new ApiContext<T>(this._clientType, this._localClientStrategy);
         this._client = context.client;
 
         this._useStorage = this._options?.useStorage ?? false;

@@ -17,6 +17,6 @@ export async function seedLocalDbFromMocks() {
     ]
 
     await db.transaction('rw', tables, async () => {
-        
+
     });
 }
