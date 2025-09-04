@@ -1,0 +1,20 @@
+[
+  { "label": "Dashboard", "route": "/dashboard", "sort_order": 1 },
+  { "label": "Estoque", "route": "/stock", "sort_order": 10 },
+  { "label": "Peças", "route":  "/stock/parts", "sort_order": 11, "parent_label": "Estoque" },
+  { "label": "Equipamentos", "route": "/stock/equipments", "sort_order": 12, "parent_label": "Estoque" },
+  { "label": "Manutenções", "route": "/maintenance", "sort_order": 20 },
+  { "label": "Agendamentos", "route": "/maintenance/schedules", "sort_order": 21, "parent_label": "Manutenções" },
+  { "label": "Ordens de Serviço", "route": "/maintenance/work-orders", "sort_order": 22, "parent_label": "Manutenções" },
+  { "label": "Mercado", "route": "/market", "sort_order": 30 },
+  { "label": "Peças", "route": "/market/parts", "sort_order": 31, "parent_label": "Mercado" },
+  { "label": "Equipamentos", "route": "/market/equipments", "sort_order": 32, "parent_label": "Mercado" },
+  { "label": "Relatórios", "route": "/reports", "sort_order": 40 },
+  { "label": "Vendas", "route": "/reports/sales", "sort_order": 41, "parent_label": "Relatórios" },
+  { "label": "Compras", "route": "/reports/purchases", "sort_order": 42, "parent_label": "Relatórios" },
+  { "label": "Manutenções", "route": "/reports/maintenance", "sort_order": 43, "parent_label": "Relatórios" },
+  { "label": "Admin", "route": "/admin", "sort_order": 100 },
+  { "label": "Cargos", "route": "/admin/roles", "sort_order": 101, "parent_label": "Admin" },
+  { "label": "Permissões", "route": "/admin/permissions", "sort_order": 102, "parent_label": "Admin" },
+  { "label": "Usuários", "route": "/admin/users", "sort_order": 103, "parent_label": "Admin" }
+]

@@ -1,0 +1,6 @@
+[
+  { "user_email": "admin@local", "role_slug": "admin" },
+  { "user_email": "manager@local", "role_slug": "manager" },
+  { "user_email": "user@local", "role_slug": "user" },
+  { "user_email": "guest@local", "role_slug": "guest" }
+]

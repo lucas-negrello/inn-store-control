@@ -1,0 +1,6 @@
+[
+  { "name": "Administrador", "slug": "admin" },
+  { "name": "Gerente", "slug": "manager" },
+  { "name": "Usuário", "slug": "user" },
+  { "name": "Convidado", "slug": "guest" }
+]

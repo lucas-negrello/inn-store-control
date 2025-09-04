@@ -1,0 +1,29 @@
+[
+  { "role_slug": "admin", "permission_key": "all" },
+
+  { "role_slug": "manager", "permission_key": "read_dashboard" },
+  { "role_slug": "manager", "permission_key": "create_dashboard" },
+  { "role_slug": "manager", "permission_key": "update_dashboard" },
+  { "role_slug": "manager", "permission_key": "delete_dashboard" },
+  { "role_slug": "manager", "permission_key": "read_stock" },
+  { "role_slug": "manager", "permission_key": "create_stock" },
+  { "role_slug": "manager", "permission_key": "update_stock" },
+  { "role_slug": "manager", "permission_key": "delete_stock" },
+  { "role_slug": "manager", "permission_key": "read_maintenance" },
+  { "role_slug": "manager", "permission_key": "create_maintenance" },
+  { "role_slug": "manager", "permission_key": "update_maintenance" },
+  { "role_slug": "manager", "permission_key": "delete_maintenance" },
+  { "role_slug": "manager", "permission_key": "read_reports" },
+  { "role_slug": "manager", "permission_key": "create_reports" },
+  { "role_slug": "manager", "permission_key": "update_reports" },
+  { "role_slug": "manager", "permission_key": "delete_reports" },
+  { "role_slug": "manager", "permission_key": "read_market" },
+  { "role_slug": "manager", "permission_key": "create_market" },
+  { "role_slug": "manager", "permission_key": "update_market" },
+  { "role_slug": "manager", "permission_key": "delete_market" },
+
+  { "role_slug": "user", "permission_key": "read_dashboard" },
+  { "role_slug": "user", "permission_key": "read_market" },
+
+  { "role_slug": "guest", "permission_key": "read_dashboard" }
+]
