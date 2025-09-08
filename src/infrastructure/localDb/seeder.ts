@@ -9,7 +9,6 @@ import {RoleAdapter} from "@/infrastructure/localDb/adapters/RoleAdapter.ts";
 import {MenuAdapter} from "@/infrastructure/localDb/adapters/MenuAdapter.ts";
 import {UserAdapter} from "@/infrastructure/localDb/adapters/UserAdapter.ts";
 import type {
-    BaseIdType,
     RolePermissionEntity,
     UserPermissionEntity,
     UserRoleEntity

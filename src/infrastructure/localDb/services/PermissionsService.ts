@@ -1,4 +1,3 @@
-import type {LocalClientStrategy} from "@/api/clients/base/LocalClientStrategy.ts";
 import type {IPermission} from "@/api/models/Permissions.interface.ts";
 import type {IApiSuccess} from "@/api/interfaces/ApiResponse.interface.ts";
 import type {BaseIdType} from "@/infrastructure/localDb/entities.ts";
@@ -6,7 +5,7 @@ import {PermissionAdapter} from "@/infrastructure/localDb/adapters/PermissionAda
 import {db} from "@/infrastructure/localDb/db.ts";
 import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter.ts";
 
-export class PermissionsClientLocal implements LocalClientStrategy<IPermission> {
+export class PermissionsService {
     async create(data: IPermission): Promise<IApiSuccess<IPermission>> {
         try {
             const entity = PermissionAdapter.toEntity(data);

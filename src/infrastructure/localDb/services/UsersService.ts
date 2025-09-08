@@ -1,4 +1,3 @@
-import type {LocalClientStrategy} from "@/api/clients/base/LocalClientStrategy.ts";
 import type {IUser} from "@/api/models/Users.interface.ts";
 import type {IApiSuccess} from "@/api/interfaces/ApiResponse.interface.ts";
 import type {BaseIdType, UserEntity} from "@/infrastructure/localDb/entities.ts";
@@ -6,13 +5,12 @@ import {UserAdapter} from "@/infrastructure/localDb/adapters/UserAdapter.ts";
 import {db} from "@/infrastructure/localDb/db.ts";
 import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter.ts";
 import {nowIso} from "@/infrastructure/localDb/utils.ts";
-import {UserRelationshipsService} from "@/api/services/local/UserRelationshipsService.ts";
+import {UserRelationshipsService} from "@/infrastructure/localDb/services/UserRelationshipsService.ts";
 
 
 
-export class UsersClientLocal
-    extends UserRelationshipsService
-    implements LocalClientStrategy<IUser> {
+export class UsersService
+    extends UserRelationshipsService {
     async create(data: IUser, passwordHash?: string): Promise<IApiSuccess<IUser>> {
         try {
             const entity = UserAdapter.toEntity(data, passwordHash);

@@ -1,8 +1,8 @@
 import type {ILoginCredentials} from "@/api/models/Auth.interface.ts";
 import {AuthFacade} from "@/api/facades/AuthFacade.ts";
-import {environment} from "@/environments/environment.ts";
+import {Env} from "@/config/env.ts";
 
-const client = new AuthFacade(`auth`, environment.defaultStrategy, {
+const client = new AuthFacade(`auth`, Env.defaultStrategy, {
     useStorage: true,
     storageType: 'local',
 });

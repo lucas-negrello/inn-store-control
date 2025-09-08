@@ -1,20 +1,18 @@
 import {HttpFacade} from "@/api/facades/base/HttpFacade.ts";
 import type {TClient} from "@/api/interfaces/Client.interface.ts";
-import {environment} from "@/environments/environment.ts";
 import type {IHttpFacadeOptions} from "@/api/interfaces/HttpFacade.interface.ts";
 import type {ILoginCredentials, ILoginResponse} from "@/api/models/Auth.interface.ts";
 import type {IApiSuccess} from "@/api/interfaces/ApiResponse.interface.ts";
 import type {IUser} from "@/api/models/Users.interface.ts";
-import type {LocalClientStrategy} from "@/api/clients/base/LocalClientStrategy.ts";
+import {Env} from "@/config/env.ts";
 
 export class AuthFacade extends HttpFacade<unknown> {
     constructor(
         url: string,
-        clientType: TClient = environment.defaultStrategy,
+        clientType: TClient = Env.defaultStrategy,
         options?: IHttpFacadeOptions,
-        localClientStrategy?: LocalClientStrategy<unknown>
     ) {
-        super(url, clientType, options, localClientStrategy);
+        super(url, clientType, options);
     }
 
     login =

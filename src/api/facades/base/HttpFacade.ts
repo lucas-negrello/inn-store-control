@@ -1,7 +1,6 @@
 import type {IHttpClientStrategy} from "@/api/clients/base/HttpClientStrategy.ts";
 import type {TStorage} from "@/utils/storage/interfaces/Storage.interface.ts";
 import type {TClient} from "@/api/interfaces/Client.interface.ts";
-import {environment} from "@/environments/environment.ts";
 import type {IHttpFacadeOptions} from "@/api/interfaces/HttpFacade.interface.ts";
 import {ApiContext} from "@/api/strategies/ApiContext.ts";
 import {
@@ -10,7 +9,6 @@ import {
     type StorageService
 } from "@/utils/storage/services/StorageService.ts";
 import {Env} from "@/config/env.ts";
-import type {LocalClientStrategy} from "@/api/clients/base/LocalClientStrategy.ts";
 
 export abstract class HttpFacade<T> {
     protected readonly _client: IHttpClientStrategy<T>;
@@ -23,9 +21,8 @@ export abstract class HttpFacade<T> {
         protected readonly _url: string,
         protected readonly _clientType: TClient = Env.defaultStrategy,
         protected readonly _options?: IHttpFacadeOptions,
-        protected readonly _localClientStrategy?: LocalClientStrategy<T>
     ) {
-        const context = new ApiContext<T>(this._clientType, this._localClientStrategy);
+        const context = new ApiContext<T>(this._clientType);
         this._client = context.client;
 
         this._useStorage = this._options?.useStorage ?? false;

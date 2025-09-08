@@ -1,19 +1,17 @@
 import type {IApiSuccess, IBaseModel} from "@/api/interfaces/ApiResponse.interface.ts";
 import type {TClient} from "@/api/interfaces/Client.interface.ts";
 import type {IHttpFacadeOptions} from "@/api/interfaces/HttpFacade.interface.ts";
-import {environment} from "@/environments/environment.ts";
 import {HttpFacade} from "@/api/facades/base/HttpFacade.ts";
-import type {LocalClientStrategy} from "@/api/clients/base/LocalClientStrategy.ts";
+import {Env} from "@/config/env.ts";
 
 export class CrudFacade<T extends IBaseModel> extends HttpFacade<T>{
 
     constructor(
         url: string,
-        clientType: TClient = environment.defaultStrategy,
+        clientType: TClient = Env.defaultStrategy,
         options?: IHttpFacadeOptions,
-        localClientStrategy?: LocalClientStrategy<T>
     ) {
-        super(url, clientType, options, localClientStrategy);
+        super(url, clientType, options);
     }
 
     getAll =

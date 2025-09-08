@@ -1,4 +1,3 @@
-import type {LocalClientStrategy} from "@/api/clients/base/LocalClientStrategy.ts";
 import type {IRole} from "@/api/models/Roles.interface.ts";
 import type {IApiSuccess} from "@/api/interfaces/ApiResponse.interface.ts";
 import type {BaseIdType, RoleEntity} from "@/infrastructure/localDb/entities.ts";
@@ -6,12 +5,11 @@ import {db} from "@/infrastructure/localDb/db.ts";
 import {RoleAdapter} from "@/infrastructure/localDb/adapters/RoleAdapter.ts";
 import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter.ts";
 import {nowIso} from "@/infrastructure/localDb/utils.ts";
-import {RoleRelationshipsService} from "@/api/services/local/RoleRelationshipsService.ts";
+import {RoleRelationshipsService} from "@/infrastructure/localDb/services/RoleRelationshipsService.ts";
 
 
-export class RolesClientLocal
-    extends RoleRelationshipsService
-    implements LocalClientStrategy<IRole> {
+export class RolesService
+    extends RoleRelationshipsService {
     async create(data: IRole): Promise<IApiSuccess<IRole>> {
         try {
             const entity = RoleAdapter.toEntity(data);

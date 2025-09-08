@@ -1,12 +1,11 @@
-import type {LocalClientStrategy} from "@/api/clients/base/LocalClientStrategy.ts";
-import type { IApiSuccess } from "@/api/interfaces/ApiResponse.interface";
+import type { IApiSuccess } from "@/api/interfaces/ApiResponse.interface.ts";
 import type {IMenuItem} from "@/api/models/Menu.interface.ts";
 import type {BaseIdType} from "@/infrastructure/localDb/entities.ts";
 import {MenuAdapter} from "@/infrastructure/localDb/adapters/MenuAdapter.ts";
 import {db} from "@/infrastructure/localDb/db.ts";
 import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter.ts";
 
-export class MenusClientLocal implements LocalClientStrategy<IMenuItem> {
+export class MenusService {
     async create(data: IMenuItem): Promise<IApiSuccess<IMenuItem>> {
         try {
             const entity = MenuAdapter.toEntity(data);
