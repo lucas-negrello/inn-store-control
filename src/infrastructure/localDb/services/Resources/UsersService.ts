@@ -5,7 +5,7 @@ import {UserAdapter} from "@/infrastructure/localDb/adapters/UserAdapter.ts";
 import {db} from "@/infrastructure/localDb/db.ts";
 import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter.ts";
 import {nowIso} from "@/infrastructure/localDb/utils.ts";
-import {UserRelationshipsService} from "@/infrastructure/localDb/services/UserRelationshipsService.ts";
+import {UserRelationshipsService} from "@/infrastructure/localDb/services/Relationships/UserRelationshipsService.ts";
 
 
 

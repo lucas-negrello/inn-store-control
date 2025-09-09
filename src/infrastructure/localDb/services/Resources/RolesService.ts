@@ -5,7 +5,7 @@ import {db} from "@/infrastructure/localDb/db.ts";
 import {RoleAdapter} from "@/infrastructure/localDb/adapters/RoleAdapter.ts";
 import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter.ts";
 import {nowIso} from "@/infrastructure/localDb/utils.ts";
-import {RoleRelationshipsService} from "@/infrastructure/localDb/services/RoleRelationshipsService.ts";
+import {RoleRelationshipsService} from "@/infrastructure/localDb/services/Relationships/RoleRelationshipsService.ts";
 
 
 export class RolesService

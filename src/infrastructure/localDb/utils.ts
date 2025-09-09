@@ -1,4 +1,4 @@
-import {type IndexableType, type Table} from 'dexie';
+import Dexie, {type IndexableType, type Table} from 'dexie';
 import type {BaseIdType, SoftDeleteEntity} from "@/infrastructure/localDb/entities.ts";
 
 export async function ensurePivot<T extends { id?: BaseIdType }>
@@ -30,7 +30,7 @@ export async function firstOrCreate<T extends { id?: BaseIdType }>(
 ) {
     const { override = false } = options ?? {};
 
-    return table.db.transaction('rw', table, async () => {
+    const logic = async () => {
         let existing = await table.where(index).equals(key as any).first();
 
         if (existing) {
@@ -58,7 +58,13 @@ export async function firstOrCreate<T extends { id?: BaseIdType }>(
                 throw error;
             }
         }
-    });
+    };
+
+    if (Dexie.currentTransaction) {
+        return logic();
+    }
+
+    return table.db.transaction('rw', table, logic);
 }
 
 export function nowIso() {
