@@ -1,7 +1,7 @@
 import type {BaseIdType, PermissionEntity} from "@/infrastructure/localDb/entities.ts";
 import type {IApiSuccess} from "@/api/interfaces/ApiResponse.interface.ts";
 import {db} from "@/infrastructure/localDb/db.ts";
-import {ensurePivot, nowIso} from "@/infrastructure/localDb/utils.ts";
+import {ensurePivot, nowIso} from "@/infrastructure/localDb/utils/generalUtils.ts";
 import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter.ts";
 import type {IPermission} from "@/api/models/Permissions.interface.ts";
 import {PermissionAdapter} from "@/infrastructure/localDb/adapters/PermissionAdapter.ts";

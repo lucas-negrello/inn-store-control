@@ -1,6 +1,6 @@
 [
-  { "email": "admin@local", "username": "Admin" },
-  { "email": "manager@local", "username": "Gerente" },
-  { "email": "user@local", "username": "Usuário" },
-  { "email": "guest@local", "username": "Convidado" }
+  { "email": "admin@local.com", "username": "Admin" },
+  { "email": "manager@local.com", "username": "Gerente" },
+  { "email": "user@local.com", "username": "Usuário" },
+  { "email": "guest@local.com", "username": "Convidado" }
 ]

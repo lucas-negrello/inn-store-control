@@ -3,7 +3,7 @@ import type {IPermission} from "@/api/models/Permissions.interface.ts";
 import type {IRole} from "@/api/models/Roles.interface.ts";
 import type {IUser} from "@/api/models/Users.interface.ts";
 import type {IMenuItem} from "@/api/models/Menu.interface.ts";
-import {firstOrCreate, nowIso} from "@/infrastructure/localDb/utils.ts";
+import {firstOrCreate, nowIso} from "@/infrastructure/localDb/utils/generalUtils.ts";
 import {PermissionAdapter} from "@/infrastructure/localDb/adapters/PermissionAdapter.ts";
 import {RoleAdapter} from "@/infrastructure/localDb/adapters/RoleAdapter.ts";
 import {MenuAdapter} from "@/infrastructure/localDb/adapters/MenuAdapter.ts";
@@ -13,6 +13,7 @@ import type {
     UserPermissionEntity,
     UserRoleEntity
 } from "@/infrastructure/localDb/entities.ts";
+import {hashPassword} from "@/infrastructure/localDb/utils/auth/passwordUtils.ts";
 
 type MockPermissions = Pick<IPermission, 'key' | 'description'>;
 type MockRoles = Pick<IRole, 'slug' | 'name'>;
@@ -116,7 +117,14 @@ export async function seedLocalDbFromMocks() {
             appendLog('Started Seeding Users\n\n');
             for (const user of users) {
                 const entity = UserAdapter.toEntity({...user, isActive: true});
-                await firstOrCreate(db.users, 'email', entity.email, {...entity, created_at: nowIso(), updated_at: nowIso()}, { override: true })
+                const password_hash = await hashPassword('password');
+                await firstOrCreate(db.users, 'email', entity.email,
+                    {
+                        ...entity,
+                        password_hash,
+                        created_at: nowIso(),
+                        updated_at: nowIso()
+                    }, { override: true })
                     .then(() => {
                         appendLog(`Created ${entity.email}`)
                     })

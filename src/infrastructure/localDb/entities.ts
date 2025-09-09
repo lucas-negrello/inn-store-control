@@ -10,6 +10,18 @@ export interface SoftDeleteEntity extends BaseEntity {
     deleted_at?: string; // ISO
 }
 
+export interface AuthTokenEntity extends BaseEntity {
+    user_id: BaseIdType;
+    token: string;
+    refresh_token?: string;
+    expires_at: string; // ISO
+    refresh_expires_at: string; // ISO
+    last_used_at?: string;
+    revoked_at?: string | null;
+    user_agent?: string;
+    ip?: string;
+}
+
 export interface UserEntity extends SoftDeleteEntity {
     email: string;
     name: string;

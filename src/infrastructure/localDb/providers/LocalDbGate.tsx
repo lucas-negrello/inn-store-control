@@ -3,7 +3,7 @@ import {type FC, type PropsWithChildren, useEffect, useState} from "react";
 import {seedLocalDbFromMocks} from "@/infrastructure/localDb/seeder.ts";
 import {db} from "@/infrastructure/localDb/db.ts";
 
-const SEED_VERSION = 'v1';
+const SEED_VERSION = 'v2';
 
 const needsReseed = (): boolean => {
     if (!Env.useLocalDb) return false;

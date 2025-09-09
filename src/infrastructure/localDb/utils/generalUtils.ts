@@ -67,6 +67,17 @@ export async function firstOrCreate<T extends { id?: BaseIdType }>(
     return table.db.transaction('rw', table, logic);
 }
 
-export function nowIso() {
-    return new Date().toISOString();
+export const addMinutes = (minutes: number) => {
+    const d = new Date();
+    d.setMinutes(d.getMinutes() + minutes);
+    return d.toISOString();
+};
+
+export const addDays = (days: number) => {
+    const d = new Date();
+    d.setDate(d.getDate() + days);
+    return d.toISOString();
 }
+
+export const nowIso = () =>
+    new Date().toISOString();

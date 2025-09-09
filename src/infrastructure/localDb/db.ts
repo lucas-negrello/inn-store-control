@@ -1,5 +1,6 @@
 import Dexie, { type Table } from 'dexie';
 import type {
+    AuthTokenEntity,
     BaseIdType,
     MenuEntity,
     PermissionEntity,
@@ -17,11 +18,12 @@ export class Db extends Dexie {
     user_roles!: Table<UserRoleEntity, BaseIdType>;
     user_permissions!: Table<UserPermissionEntity, BaseIdType>;
     user_menus!: Table<UserMenuEntity, BaseIdType>;
+    auth_tokens!: Table<AuthTokenEntity, BaseIdType>;
 
     constructor() {
         super('innStoreLocalDB');
 
-        this.version(1).stores({
+        const v1Stores = {
             users: '++id, &email, is_active, created_at',
             menus: '++id, is_active, parent_id, sort_order, label',
             roles: '++id, &slug, name, created_at',
@@ -30,7 +32,18 @@ export class Db extends Dexie {
             user_roles: '++id, &[user_id+role_id], user_id, role_id',
             user_permissions: '++id, &[user_id+permission_id], user_id, permission_id',
             user_menus: '++id, &[user_id+menu_id], user_id, menu_id',
-        })
+        };
+
+        const v2Stores = {
+            ...v1Stores,
+            auth_tokens: '++id, token, user_id, expires_at, refresh_token',
+        }
+
+        this.version(1).stores(v1Stores);
+
+        this.version(2).stores(v2Stores).upgrade(async (tx) => {
+            // If needed to migrate data further
+        });
     }
 }
 

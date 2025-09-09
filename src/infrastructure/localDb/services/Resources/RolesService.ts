@@ -4,7 +4,7 @@ import type {BaseIdType, RoleEntity} from "@/infrastructure/localDb/entities.ts"
 import {db} from "@/infrastructure/localDb/db.ts";
 import {RoleAdapter} from "@/infrastructure/localDb/adapters/RoleAdapter.ts";
 import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter.ts";
-import {nowIso} from "@/infrastructure/localDb/utils.ts";
+import {nowIso} from "@/infrastructure/localDb/utils/generalUtils.ts";
 import {RoleRelationshipsService} from "@/infrastructure/localDb/services/Relationships/RoleRelationshipsService.ts";
 
 

@@ -1,7 +1,7 @@
 import type {BaseIdType, MenuEntity, PermissionEntity, RoleEntity} from "@/infrastructure/localDb/entities.ts";
 import type {IApiSuccess} from "@/api/interfaces/ApiResponse.interface.ts";
 import {db} from "@/infrastructure/localDb/db.ts";
-import {ensurePivot, nowIso} from "@/infrastructure/localDb/utils.ts";
+import {ensurePivot, nowIso} from "@/infrastructure/localDb/utils/generalUtils.ts";
 import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter.ts";
 import type {IRole} from "@/api/models/Roles.interface.ts";
 import {RoleAdapter} from "@/infrastructure/localDb/adapters/RoleAdapter.ts";

@@ -2,6 +2,10 @@ import type {IHttpClientStrategy} from "@/api/clients/base/HttpClientStrategy.ts
 import type {IApiSuccess} from "@/api/interfaces/ApiResponse.interface.ts";
 import {LocalConfig} from "@/api/config/local.config.ts";
 import {Env} from "@/config/env.ts";
+import type {ILoginCredentials} from "@/api/models/Auth.interface.ts";
+import {AuthService as LocalAuthService} from "@/infrastructure/localDb/services";
+import {localStorageService} from "@/utils/storage/services/StorageService.ts";
+import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter.ts";
 
 export class LocalClient<T = any> implements IHttpClientStrategy<T> {
     private _localConfig = new LocalConfig<T>();
@@ -13,20 +17,38 @@ export class LocalClient<T = any> implements IHttpClientStrategy<T> {
 
     async post(url: string, payload: T, props?: any): Promise<IApiSuccess<T>> {
         await this._useLocalDb();
+        const norm = url.replace(/^\//, '').toLowerCase();
+
+        if (norm === 'auth/login') {
+            try {
+                const creds = payload as ILoginCredentials;
+                const result = await LocalAuthService.login(creds);
+                localStorageService.set('auth_token', result.token, result.ttl);
+                return ResponseAdapter.toResponse(result as T);
+            } catch (e: any) {
+                return this._localConfig.fail(e?.message || 'Falha ao logar');
+            }
+        }
+        if (norm === 'auth/register') {
+            throw new Error('Endpoint is not ready');
+        }
+        if (norm === 'auth/logout') {
+            const token = localStorageService.get('auth_token') as string | null;
+            if (token) {
+                await LocalAuthService.logout(token);
+                localStorageService.remove('auth_token');
+            }
+            return ResponseAdapter.toResponse(null as T, 200, 'Logout Successfully');
+        }
+        if (norm === 'auth/refresh') {
+            throw new Error('Endpoint is not ready');
+        }
         try {
             const resource = this._localConfig.resolveResource(url);
             const service = this._localConfig.getService(resource);
-            if (!service)
+            if (!service || typeof service.create !== 'function')
                 return this._localConfig.fail('Service not found', 404);
-            if (service.create && typeof service.create === 'function')
-                return service.create(payload, props);
-            if (service.login && typeof service.login === 'function')
-                return service.login(payload);
-            if (service.register && typeof service.register === 'function')
-                return service.register(payload);
-            if (service.logout && typeof service.logout === 'function')
-                return service.logout(payload);
-            else return this._localConfig.fail('Service not found', 404);
+            return service.create(payload, props);
         } catch (e: any) {
             return this._localConfig.fail(e?.message || 'Fail on create local resource' , 500);
         }
@@ -73,16 +95,20 @@ export class LocalClient<T = any> implements IHttpClientStrategy<T> {
 
     async get(url: string, id: number | string, props?: any): Promise<IApiSuccess<T>> {
         await this._useLocalDb();
+        const normBase = url.replace(/^\//, '').toLowerCase();
+        if (normBase === 'auth' && id === 'me') {
+            const token = localStorageService.get('auth_token') as string | null;
+            if (!token) return this._localConfig.fail('Not Authenticated', 403);
+            const user = await LocalAuthService.me();
+            if (!user) return this._localConfig.fail('Invalid or Expired token', 400);
+            return ResponseAdapter.toResponse(user as T);
+        }
         try {
             const resource = this._localConfig.resolveResource(url);
             const service = this._localConfig.getService(resource);
-            if (!service)
+            if (!service || typeof service.getById !== 'function')
                 return this._localConfig.fail('Service not found', 404);
-            if (service.getById && typeof service.getById === 'function')
-                return service.getById(id, props);
-            if (service.me && typeof service.me === 'function')
-                return service.me(id);
-            else return this._localConfig.fail('Service not found', 404);
+            return service.getById(id, props);
         } catch (e: any) {
             return this._localConfig.fail(e?.message || 'Fail on get local resource' , 500);
         }
