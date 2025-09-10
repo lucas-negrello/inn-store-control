@@ -6,6 +6,7 @@ import type {ILoginCredentials} from "@/api/models/Auth.interface.ts";
 import {AuthService as LocalAuthService} from "@/infrastructure/localDb/services";
 import {localStorageService} from "@/utils/storage/services/StorageService.ts";
 import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter.ts";
+import {addMinutes} from "@/infrastructure/localDb/utils/generalUtils.ts";
 
 export class LocalClient<T = any> implements IHttpClientStrategy<T> {
     private _localConfig = new LocalConfig<T>();
@@ -23,7 +24,8 @@ export class LocalClient<T = any> implements IHttpClientStrategy<T> {
             try {
                 const creds = payload as ILoginCredentials;
                 const result = await LocalAuthService.login(creds);
-                localStorageService.set('auth_token', result.token, result.ttl);
+                const ttl = result.ttl && result.ttl * 60 * 60 * 24 * 7;
+                localStorageService.set('auth_token', result.token, ttl);
                 return ResponseAdapter.toResponse(result as T);
             } catch (e: any) {
                 return this._localConfig.fail(e?.message || 'Falha ao logar');

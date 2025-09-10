@@ -1,7 +1,7 @@
 import {environment} from "@/environments/environment.ts";
 import type {ICacheItem} from "@/utils/storage/interfaces/Storage.interface.ts";
 
-export class StorageService {
+class StorageService {
     private _keyPrefix = `${environment.projectName}--`;
     constructor(private _storage: Storage) {}
 
