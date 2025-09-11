@@ -42,7 +42,7 @@ export const Env = {
     },
 
     get defaultStrategy(): TClient {
-        return readEnvString('VITE_DEFAULT_STRATEGY', 'REACT_APP_DEFAULT_STRATEGY') as TClient ?? 'mock';
+        return readEnvString('VITE_DEFAULT_STRATEGY', 'REACT_APP_DEFAULT_STRATEGY') as TClient ?? 'local';
     },
 
     get projectName(): string {

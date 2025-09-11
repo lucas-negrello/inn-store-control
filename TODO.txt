@@ -1,0 +1,38 @@
+TODO: Local/Session Storage Service
+    - Implement Service that handles states and localStorage / sessionStorage auto sync:
+        - This service should be standalone.
+        - It should be able to know if a resource is or not at local/session storage.
+        - It should have an access list for resources, values and validity, like a local/session storage map.
+    - Implement a provider/context/hook to use the local/session storage service and be available in all application.
+
+TODO: Remove completely the environment file
+    - There are 2 environment files. Should be removed the environment.ts and used only de Env.ts file.
+
+TODO: Providers organization
+    - Create a mainProviders component that will wrap all global providers in the app.
+    - Refactor the current AppContext/AppProvider and useApp for being the same pattern.
+
+TODO: Menus
+    - Refactor current menu component to be recursive and support submenus. (as current structure)
+    - Refactor local .json list to append new menu icons and items, implementing the DynamicIcon and IconMap Components.
+
+TODO: Create Providers for all the pages and its tabs/accesses
+    - After menus being constructed and implemented, create a provider for the main pages, that will handle the states and logic of each page.
+    - Create the related pages for the menu items. This pages should handle with specific things only.
+
+TODO: Create a global service that logs all the console.log, console.error, console.warn
+    - This service should wrap all the requests and responses, preventing default responses and data leaks.
+    - When something throw an error, it should be logged with this service.
+    - This service should be able to be configured to not log in production environment. Then, consoles will be ignored in production.
+    - Further, it can be extended to log to a remote server, like Sentry or LogRocket, or even a non-related DB server like MongoDB.
+
+TODO: Create the facades to CRUD users, roles and permissions, with accessor methods
+    - Create a facade for users, roles and permissions, that will handle the logic of each entity.
+    - The facades should be able to handle the CRUD operations and also the accessor methods.
+    - The facades should be used by the related service to handle requests automatically, based on the selected env client.
+
+TODO: Create a service to match the routes, the menu items and the rules/permissions by item
+    - The menu could have a relationship with roles and permissions, so, that should be created pivot tables for it.
+    - Then, there should be a service that will match the current user permissions with the menu items and the routes.
+    - Today, the permissions/roles are passed by hand to the PermissionGuardProvider. This should be automatic.
+    - The service should be able to know if the current user has access to the current route/menu item.
