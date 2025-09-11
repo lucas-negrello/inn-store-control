@@ -13,4 +13,7 @@ export const MenuService = {
     createMenu: (menu: IMenuItem) => client.post(menu),
     updateMenu: (id: number | string, menu: IMenuItem) => client.update(id, menu),
     deleteMenu: (id: number | string) => client.delete(id),
+    getFlatMenu: (withInactive = false) => client.getFlatMenu(withInactive),
+    getMenuTree: (withInactive = false) => client.getMenuTree(withInactive),
+    getMenuTreeByUser: (userId: number | string, withInactive = false) => client.getMenuTreeByUser(userId, withInactive),
 }

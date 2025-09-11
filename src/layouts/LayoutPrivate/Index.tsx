@@ -20,13 +20,12 @@ const mainStyles: SxProps = {
 
 type Props = {
     showMenuButton?: boolean;
-    onLogoClickRoute?: string;
 };
 
-export default function LayoutPrivate({ showMenuButton, onLogoClickRoute }: Props): ReactElement {
+export default function LayoutPrivate({ showMenuButton }: Props): ReactElement {
     return (
         <Box sx={bodyStyles}>
-            <MainHeader onLogoClickRoute={onLogoClickRoute} showMenuButton={showMenuButton ?? false} />
+            <MainHeader showMenuButton={showMenuButton ?? false} />
             { showMenuButton ?
                 <Sidebar /> :
                 <></>

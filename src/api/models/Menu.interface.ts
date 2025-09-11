@@ -1,6 +1,6 @@
-import type {TRoles} from "@/api/models/Roles.interface.ts";
+import type {IRole} from "@/api/models/Roles.interface.ts";
 import type {IBaseModel} from "@/api/interfaces/ApiResponse.interface.ts";
-import type {TPermission} from "@/api/models/Permissions.interface.ts";
+import type {IPermission} from "@/api/models/Permissions.interface.ts";
 
 export interface IMenuItem extends IBaseModel{
     parent_id?: number | string;
@@ -9,7 +9,7 @@ export interface IMenuItem extends IBaseModel{
     icon?: string;
     isActive: boolean;
     sort_order?: number;
-    roles?: TRoles;
-    permissions?: TPermission[];
+    roles?: IRole[];
+    permissions?: IPermission[];
     children?: IMenuItem[];
 }

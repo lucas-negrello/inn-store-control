@@ -79,18 +79,17 @@ export class MenusService {
         }
     }
 
-    async listFlat(withInactive: boolean = false): Promise<IApiSuccess<IMenuItem[]>> {
+    static async listFlat(withInactive: boolean = false): Promise<IMenuItem[]> {
         try {
             const entities = await db.menus.orderBy('sort_order').toArray();
-            const domains = entities.map(MenuAdapter.toDomain).filter(menu => withInactive || menu.isActive);
-            return ResponseAdapter.toResponse(domains);
+            return entities.map(MenuAdapter.toDomain).filter(menu => withInactive || menu.isActive);
         } catch (error) {
             console.error('Error listing ordered menu items:', error);
             throw error;
         }
     }
 
-    async getTree(withInactive: boolean = false): Promise<IApiSuccess<IMenuItem[]>> {
+    static async getTree(withInactive: boolean = false): Promise<IMenuItem[]> {
         try {
             const all = await db.menus.orderBy('sort_order').filter(menu => withInactive || menu.is_active).toArray();
             const map = new Map<BaseIdType, IMenuItem>();
@@ -123,14 +122,14 @@ export class MenusService {
 
             sortRecursive(roots);
 
-            return ResponseAdapter.toResponse(roots)
+            return roots;
         } catch (error) {
             console.error('Error building menu tree:', error);
             throw error;
         }
     }
 
-    async getTreeForUser(user_id: BaseIdType, withInactive: boolean = false): Promise<IApiSuccess<IMenuItem[]>> {
+    static async getTreeForUser(user_id: BaseIdType, withInactive: boolean = false): Promise<IMenuItem[]> {
         try {
             const userMenusPivots = await db.user_menus.where('user_id').equals(user_id).toArray();
             const allowedIds = new Set(userMenusPivots.map(um => um.menu_id));
@@ -179,7 +178,7 @@ export class MenusService {
 
             sortRecursive(roots);
 
-            return ResponseAdapter.toResponse(roots)
+            return roots;
         } catch (error) {
             console.error('Error building menu tree for user:', error);
             throw error;

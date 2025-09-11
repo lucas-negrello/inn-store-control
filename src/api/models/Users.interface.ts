@@ -1,6 +1,7 @@
 import type {ISoftDeleteModel} from "@/api/interfaces/ApiResponse.interface.ts";
 import type {IRole} from "@/api/models/Roles.interface.ts";
-import type {TPermission} from "@/api/models/Permissions.interface.ts";
+import type {IPermission} from "@/api/models/Permissions.interface.ts";
+import type {IMenuItem} from "@/api/models/Menu.interface.ts";
 
 export interface IUser extends ISoftDeleteModel {
     username: string;
@@ -9,7 +10,8 @@ export interface IUser extends ISoftDeleteModel {
     isActive: boolean;
     meta?: Partial<IUserMeta>;
     roles?: IRole[];
-    permissions?: TPermission[];
+    permissions?: IPermission[];
+    menus?: IMenuItem[];
 }
 
 // TODO: Extend user metadata as needed

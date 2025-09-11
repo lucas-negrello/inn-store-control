@@ -16,7 +16,6 @@ import {hashPassword, verifyPassword} from "@/infrastructure/localDb/utils/auth/
 import {addDays, addMinutes, nowIso} from "@/infrastructure/localDb/utils/generalUtils.ts";
 import {generateToken} from "@/infrastructure/localDb/utils/auth/tokenUtils.ts";
 import {UserAdapter} from "@/infrastructure/localDb/adapters/UserAdapter.ts";
-import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter.ts";
 import {localStorageService, sessionStorageService} from "@/utils/storage/services/StorageService.ts";
 
 export class AuthService {
@@ -95,10 +94,17 @@ export class AuthService {
 
         await db.auth_tokens.update(tokenRow.id!, { last_used_at: nowIso() });
 
+        const savedUser =
+            localStorageService.get('user') as IUser | null ||
+            sessionStorageService.get('user') as IUser | null;
+
+        if (savedUser) {
+            return UserAdapter.toUserSafe(savedUser);
+        }
         const user = await db.users.get(tokenRow.user_id);
         if (!user) return null;
 
-        return UserAdapter.toDomain(user);
+        return UserAdapter.toUserSafe(user);
     }
 
     public static refresh = async (oldRefreshToken: string): Promise<IRefreshTokenResponse | null> => {

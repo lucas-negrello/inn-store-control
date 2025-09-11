@@ -1,5 +1,4 @@
 import type {IUser} from "@/api/models/Users.interface.ts";
-import type {TPermission} from "@/api/models/Permissions.interface.ts";
 
 export interface IAppContext {
     userId?: string | number;
@@ -14,11 +13,11 @@ export interface IAppContext {
 }
 
 export interface IPermissionContext {
-    hasPermission: (permission: TPermission) => boolean;
+    hasPermission: (permission: string) => boolean;
     hasRole: (role: string) => boolean;
     hasAnyRole: (roles: string[]) => boolean;
     hasAllRoles: (roles: string[]) => boolean;
-    hasAnyPermission: (permissions: TPermission[]) => boolean;
-    hasAllPermissions: (permissions: TPermission[]) => boolean;
-    canAccessRoute: (requiredRoles?: string[], requiredPermissions?: TPermission[]) => boolean;
+    hasAnyPermission: (permissions: string[]) => boolean;
+    hasAllPermissions: (permissions: string[]) => boolean;
+    canAccessRoute: (requiredRoles?: string[], requiredPermissions?: string[]) => boolean;
 }

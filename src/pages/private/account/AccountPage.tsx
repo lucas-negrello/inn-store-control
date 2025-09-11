@@ -108,8 +108,8 @@ export default function AccountPage() {
                                 {user.permissions && user.permissions.length > 0 ? (
                                     user.permissions.map((permission) => (
                                         <Chip
-                                            key={permission}
-                                            label={permission}
+                                            key={permission.id}
+                                            label={permission.key}
                                             variant="outlined"
                                             color="secondary"
                                             size="small"

@@ -31,7 +31,7 @@ const menuStyles: SxProps = {
 
 export const Sidebar = () => {
     const {isSidebarOpen, closeSidebar} = useLayout();
-    const {userId, user, isAuthenticated} = useApp();
+    const {userId, user, isAuthenticated, checkAuth} = useApp();
     const {canAccessRoute} = usePermissions();
     const [loading, setLoading] = useState<boolean>(true);
     const [sidebarItems, setSidebarItems] = useState<IMenuItem[]>([]);
@@ -49,7 +49,7 @@ export const Sidebar = () => {
             setLoading(true);
             setError(null);
 
-            const res = await MenuService.getMenus();
+            const res = await MenuService.getMenuTreeByUser(userId!);
 
             if (res.success && res.data) {
                 const filteredItems = res.data.filter((item: IMenuItem) => {
@@ -58,7 +58,10 @@ export const Sidebar = () => {
 
                         if (!item.roles || item.roles.length === 0) return true;
 
-                        return canAccessRoute(item.roles.flatMap(r => r.name), item.permissions);
+                        const _roles = item.roles.map(r => r.slug);
+                        const _permissions = item.permissions?.flatMap(p => p.key) || [];
+
+                        return canAccessRoute(_roles, _permissions);
                     } catch (error) {
                         console.error('Error filtering menu items:', error);
                         return false;
@@ -77,26 +80,27 @@ export const Sidebar = () => {
         } finally {
             setLoading(false);
         }
-    }, [isAuthenticated, user, canAccessRoute]);
+    }, [isAuthenticated, user, userId, canAccessRoute]);
 
     useEffect(() => {
         loadMenuItems();
     }, [loadMenuItems]);
 
-    const handleNavigation = useCallback((route: string) => {
+    const handleNavigation = useCallback(async (route: string) => {
         try {
+            await checkAuth();
             if (!userId) {
                 navigate('/');
                 closeSidebar();
                 return;
             }
-            const path = route === '' ? `/${userId}` : `/${userId}/${route}`;
+            const path = route === '/dashboard' ? `/${userId}` : `/${userId}${route}`;
             navigate(path);
             closeSidebar();
         } catch (error) {
             console.error('Navigation error:', error);
         }
-    }, [userId, navigate, closeSidebar]);
+    }, [userId, navigate, closeSidebar, checkAuth]);
 
     if (loading) {
         return (
@@ -119,7 +123,7 @@ export const Sidebar = () => {
     }
 
     return (
-        <Drawer open={isSidebarOpen} onClick={closeSidebar}>
+        <Drawer open={isSidebarOpen} onClose={closeSidebar}>
             <List sx={{width: 250}}>
                 {sidebarItems.length === 0 ? (
                     <Box sx={{ p: 2 }}>

@@ -34,13 +34,13 @@ export const DebugInfo: FC = () => {
                             <strong>Roles:</strong> {user?.roles?.map(r => r.name).join(', ') || 'None'}
                         </Typography>
                         <Typography variant="body2">
-                            <strong>Permissions:</strong> {user?.permissions?.join(', ') || 'None'}
+                            <strong>Permissions:</strong> {user?.permissions?.flatMap(p => p.key).join(', ') || 'None'}
                         </Typography>
                         <Typography variant="body2">
                             <strong>Has Admin Role:</strong> {hasRole('admin') ? 'Yes' : 'No'}
                         </Typography>
                         <Typography variant="body2">
-                            <strong>Has Read Permission:</strong> {hasPermission('read') ? 'Yes' : 'No'}
+                            <strong>Has All Permission:</strong> {hasPermission('all') ? 'Yes' : 'No'}
                         </Typography>
                     </Box>
                 </AccordionDetails>

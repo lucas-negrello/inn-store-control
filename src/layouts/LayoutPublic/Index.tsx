@@ -6,6 +6,7 @@ import MainHeader from "@/shared/Layout/Header/MainHeader.tsx";
 import MainFooter from "@/shared/Layout/Footer/MainFooter.tsx";
 import {DebugInfo} from "@/utils/debug/DebugInfo.tsx";
 import {useApp} from "@app/hooks/params/useApp.ts";
+import {Sidebar} from "@/shared/Layout/Sidebar/Sidebar.tsx";
 
 const bodyStyles: SxProps = {
     minHeight: '100vh',
@@ -24,6 +25,10 @@ export default function LayoutPublic(): ReactElement {
     return (
         <Box sx={bodyStyles}>
             <MainHeader showMenuButton={isAuthenticated} />
+            { isAuthenticated ?
+                <Sidebar /> :
+                <></>
+            }
 
             <Container component="main" sx={mainStyles}>
                 <Outlet />

@@ -5,6 +5,8 @@ import {useLocation, useNavigate} from "react-router-dom";
 import type {IUser} from "@/api/models/Users.interface.ts";
 import type {IAppContext} from "@app/contexts/params/types.ts";
 import {AuthService} from "@/api/services/AuthService.ts";
+import {sessionStorageService} from "@/utils/storage/services/StorageService.ts";
+import {UserAdapter} from "@/infrastructure/localDb/adapters/UserAdapter.ts";
 
 export const AppProvider = ({ children }: IAppProps) => {
     const [userId, setUserId] = useState<string | number | undefined>(undefined);
@@ -40,6 +42,15 @@ export const AppProvider = ({ children }: IAppProps) => {
     useEffect(() => {
         checkAuthentication();
     }, [checkAuthentication]);
+
+    useEffect(() => {
+        const savedUser = sessionStorageService.get<IUser>('user');
+        if (isAuthenticated && user) {
+            if (savedUser) return;
+            return sessionStorageService.set('user', UserAdapter.toUserSafe(user));
+        }
+        return sessionStorageService.remove('user');
+    }, [isAuthenticated, user]);
 
     useEffect(() => {
         if (!isAuthenticated || isLoading) return;

@@ -4,9 +4,9 @@ import {LocalConfig} from "@/api/config/local.config.ts";
 import {Env} from "@/config/env.ts";
 import type {ILoginCredentials} from "@/api/models/Auth.interface.ts";
 import {AuthService as LocalAuthService} from "@/infrastructure/localDb/services";
+import {UsersService as LocalUserService} from "@/infrastructure/localDb/services";
 import {localStorageService} from "@/utils/storage/services/StorageService.ts";
 import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter.ts";
-import {addMinutes} from "@/infrastructure/localDb/utils/generalUtils.ts";
 
 export class LocalClient<T = any> implements IHttpClientStrategy<T> {
     private _localConfig = new LocalConfig<T>();
@@ -103,7 +103,8 @@ export class LocalClient<T = any> implements IHttpClientStrategy<T> {
             if (!token) return this._localConfig.fail('Not Authenticated', 403);
             const user = await LocalAuthService.me();
             if (!user) return this._localConfig.fail('Invalid or Expired token', 400);
-            return ResponseAdapter.toResponse(user as T);
+            const fullUser = await LocalUserService.getUserWithAllRelationships(user.id!);
+            return ResponseAdapter.toResponse(fullUser as T);
         }
         try {
             const resource = this._localConfig.resolveResource(url);

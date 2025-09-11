@@ -8,6 +8,7 @@ import MarketPage from "@/pages/private/market/MarketPage.tsx";
 import ReportsPage from "@/pages/private/reports/ReportsPage.tsx";
 import {ProtectedRouteProvider} from "@app/providers/auth/ProtectedRouteProvider.tsx";
 import AccountPage from "@/pages/private/account/AccountPage.tsx";
+import AdminPage from "@/pages/private/admin/AdminPage.tsx";
 
 
 export default function () {
@@ -45,6 +46,12 @@ export default function () {
                 <Route path="reports" element={
                     <ProtectedRouteProvider roles={['admin']}>
                         <ReportsPage />
+                    </ProtectedRouteProvider>
+                } />
+
+                <Route path="admin" element={
+                    <ProtectedRouteProvider roles={['admin']}>
+                        <AdminPage />
                     </ProtectedRouteProvider>
                 } />
 

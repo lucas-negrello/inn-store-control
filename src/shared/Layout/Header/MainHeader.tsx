@@ -1,4 +1,4 @@
-import {AccountCircleRounded, DarkModeRounded, LightModeRounded, Menu} from "@mui/icons-material";
+import {AccountCircleRounded, DarkModeRounded, Home, LightModeRounded, Menu} from "@mui/icons-material";
 import {AppBar, Box, type SxProps, Toolbar} from "@mui/material";
 import * as React from "react";
 import {useThemeMode} from "@app/hooks/layout/useThemeMode.ts";
@@ -57,8 +57,13 @@ export default function MainHeader({ showMenuButton }: Props) {
             <Toolbar sx={toolbarStyles}>
                 {
                     showMenuButton ?
-                        <Box>
-                            <CustomIconButton icon={Menu} color='primary' onClick={toggleSidebar} />
+                        <Box display="flex" alignItems="center" gap={0.5}>
+                            <Box>
+                                <CustomIconButton icon={Menu} color="default" onClick={toggleSidebar} />
+                            </Box>
+                            <Box>
+                                <CustomIconButton icon={Home} color="default" onClick={() => navigate('/')} />
+                            </Box>
                         </Box>
                         :
                         <Box sx={{ width: 40 }} />
@@ -70,7 +75,7 @@ export default function MainHeader({ showMenuButton }: Props) {
                     onClick={handleLogoClick}
                     sx={logoStyles} />
                 <Box>
-                    <CustomIconButton icon={Icon} color='primary' onClick={toggleTheme} />
+                    <CustomIconButton icon={Icon} color="default" onClick={toggleTheme} />
                     <UserDropdownMenuButton />
                 </Box>
             </Toolbar>
