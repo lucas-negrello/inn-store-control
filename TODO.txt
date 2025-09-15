@@ -1,11 +1,4 @@
-TODO: Local/Session Storage Service
-    - Implement Service that handles states and localStorage / sessionStorage auto sync:
-        - This service should be standalone.
-        - It should be able to know if a resource is or not at local/session storage.
-        - It should have an access list for resources, values and validity, like a local/session storage map.
-    - Implement a provider/context/hook to use the local/session storage service and be available in all application.
-
-TODO: Remove completely the environment file
+[DONE_TODO]: Remove completely the environment file
     - There are 2 environment files. Should be removed the environment.ts and used only de Env.ts file.
 
 TODO: Providers organization

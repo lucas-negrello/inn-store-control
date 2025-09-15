@@ -1,7 +1,7 @@
 import type {IApiError} from "@/api/interfaces/ApiResponse.interface.ts";
-import {environment} from "@/environments/environment.ts";
+import {Env} from "@/config/env.ts";
 
-const baseUrl = environment.baseApi;
+const baseUrl = Env.apiBaseUrl;
 
 const defaultHeadedrs = {
     'Content-Type': 'application/json',

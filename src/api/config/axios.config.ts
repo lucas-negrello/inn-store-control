@@ -1,9 +1,9 @@
 import axios, {type AxiosResponse} from 'axios';
 import type {IApiError} from "@/api/interfaces/ApiResponse.interface.ts";
-import {environment} from "@/environments/environment.ts";
+import {Env} from "@/config/env.ts";
 
 const axiosInstance = axios.create({
-    baseURL: environment.baseApi,
+    baseURL: Env.apiBaseUrl,
     timeout: 10000, // 10 seconds
     headers: {
         'Content-Type': 'application/json',
