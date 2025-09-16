@@ -5,7 +5,7 @@
     - Create a mainProviders component that will wrap all global providers in the app.
     - Refactor the current PermissionContext/PermissionProvider and usePermissions for being the same pattern.
 
-TODO: Menus
+[DONE_TODO >> 15/09/2025]: Menus
     - Refactor current menu component to be recursive and support submenus. (as current structure)
     - Refactor local .json list to append new menu icons and items, implementing the DynamicIcon and IconMap Components.
 
