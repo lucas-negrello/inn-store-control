@@ -1,9 +1,9 @@
-[DONE_TODO]: Remove completely the environment file
+[DONE_TODO >> 15/09/2025]: Remove completely the environment file
     - There are 2 environment files. Should be removed the environment.ts and used only de Env.ts file.
 
-TODO: Providers organization
+[DONE_TODO >> 15/09/2025]: Providers organization
     - Create a mainProviders component that will wrap all global providers in the app.
-    - Refactor the current AppContext/AppProvider and useApp for being the same pattern.
+    - Refactor the current PermissionContext/PermissionProvider and usePermissions for being the same pattern.
 
 TODO: Menus
     - Refactor current menu component to be recursive and support submenus. (as current structure)
@@ -27,5 +27,5 @@ TODO: Create the facades to CRUD users, roles and permissions, with accessor met
 TODO: Create a service to match the routes, the menu items and the rules/permissions by item
     - The menu could have a relationship with roles and permissions, so, that should be created pivot tables for it.
     - Then, there should be a service that will match the current user permissions with the menu items and the routes.
-    - Today, the permissions/roles are passed by hand to the PermissionGuardProvider. This should be automatic.
+    - Today, the permissions/roles are passed by hand to the PermissionProvider. This should be automatic.
     - The service should be able to know if the current user has access to the current route/menu item.

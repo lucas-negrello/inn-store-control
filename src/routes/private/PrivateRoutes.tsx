@@ -6,7 +6,7 @@ import StockPage from "@/pages/private/stock/StockPage.tsx";
 import MaintenancePage from "@/pages/private/maintenance/MaintenancePage.tsx";
 import MarketPage from "@/pages/private/market/MarketPage.tsx";
 import ReportsPage from "@/pages/private/reports/ReportsPage.tsx";
-import {ProtectedRouteProvider} from "@app/providers/auth/ProtectedRouteProvider.tsx";
+import {RouteProtection} from "@app/guards/RouteProtection/RouteProtection.tsx";
 import AccountPage from "@/pages/private/account/AccountPage.tsx";
 import AdminPage from "@/pages/private/admin/AdminPage.tsx";
 
@@ -16,9 +16,9 @@ export default function () {
         <Route
             path="/:userId/*"
             element={
-                <ProtectedRouteProvider requireAuth={true}>
+                <RouteProtection requireAuth={true}>
                     <Outlet />
-                </ProtectedRouteProvider> }
+                </RouteProtection> }
         >
             <Route path='' element={<LayoutPrivate showMenuButton={true}/>}>
                 <Route index element={<DashboardPage />} />
@@ -26,33 +26,33 @@ export default function () {
                 <Route path="account" element={<AccountPage />} />
 
                 <Route path="stock" element={
-                    <ProtectedRouteProvider roles={['admin', 'manager']}>
+                    <RouteProtection roles={['admin', 'manager']}>
                         <StockPage />
-                    </ProtectedRouteProvider>
+                    </RouteProtection>
                 } />
 
                 <Route path="maintenance" element={
-                    <ProtectedRouteProvider roles={['admin', 'manager']}>
+                    <RouteProtection roles={['admin', 'manager']}>
                         <MaintenancePage />
-                    </ProtectedRouteProvider>
+                    </RouteProtection>
                 } />
 
                 <Route path="market" element={
-                    <ProtectedRouteProvider roles={['admin', 'manager']}>
+                    <RouteProtection roles={['admin', 'manager']}>
                         <MarketPage />
-                    </ProtectedRouteProvider>
+                    </RouteProtection>
                 } />
 
                 <Route path="reports" element={
-                    <ProtectedRouteProvider roles={['admin']}>
+                    <RouteProtection roles={['admin']}>
                         <ReportsPage />
-                    </ProtectedRouteProvider>
+                    </RouteProtection>
                 } />
 
                 <Route path="admin" element={
-                    <ProtectedRouteProvider roles={['admin']}>
+                    <RouteProtection roles={['admin']}>
                         <AdminPage />
-                    </ProtectedRouteProvider>
+                    </RouteProtection>
                 } />
 
                 <Route path="*" element={<Fallback route={`/`} replace={false} /> } />

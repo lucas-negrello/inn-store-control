@@ -1,11 +1,11 @@
 import type {FC} from "react";
-import type {IProtectedRouteProps} from "@app/providers/auth/types.ts";
+import type {IProtectedRouteProps} from "@app/guards/RouteProtection/types.ts";
 import {useApp} from "@app/hooks/params/useApp.ts";
 import {Navigate, useLocation} from "react-router-dom";
 import {Alert, Box, CircularProgress} from "@mui/material";
 import {usePermissions} from "@app/hooks/params/usePermissions.ts";
 
-export const ProtectedRouteProvider: FC<IProtectedRouteProps> = ({
+export const RouteProtection: FC<IProtectedRouteProps> = ({
     children,
     requireAuth = true,
     roles = [],
