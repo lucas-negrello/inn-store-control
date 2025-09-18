@@ -1,6 +1,6 @@
 import type {IUser} from "@/api/models/Users.interface.ts";
 
-export const ACCESS_TTL_MINUTES = 30;
+export const ACCESS_TTL_MINUTES = 60;
 export const REFRESH_TTL_DAYS = 7;
 
 export interface ILoginCredentials {

@@ -19,15 +19,16 @@ export class UserRelationshipsService {
             const user = await db.users.get(user_id);
             if (!user) throw new Error('User not found');
 
-            const { roles, permissions, menus } = await Promise.all([
+            const [ roles, directPermissions, effectivePermissions, menus ] = await Promise.all([
                 this.getRoles(user_id),
                 this.getDirectPermissions(user_id),
                 this.getEffectivePermissions(user_id),
                 this.getMenus(user_id)
-            ]).then(([roles, directPermissions, effectivePermissions, menus]) =>
-                ({roles, permissions: [...directPermissions, ...effectivePermissions], menus}));
+            ]);
 
-            const domain = UserAdapter.toDomain(user);
+            const permissions = [...directPermissions, ...effectivePermissions];
+
+            const domain = UserAdapter.toUserSafe(user);
             return {
                 ...domain,
                 roles,

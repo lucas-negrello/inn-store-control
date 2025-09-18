@@ -48,5 +48,9 @@ export const Env = {
     get projectName(): string {
         return readEnvString('VITE_PROJECT_NAME', 'REACT_APP_PROJECT_NAME')
             || 'microondas-caxias';
+    },
+
+    get localClientLoadRelations(): boolean {
+        return getBooleanEnv('VITE_LOCAL_CLIENT_LOAD_RELATIONS', 'REACT_APP_LOCAL_CLIENT_LOAD_RELATIONS', true);
     }
 }

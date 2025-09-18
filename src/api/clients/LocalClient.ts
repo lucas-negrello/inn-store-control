@@ -24,7 +24,7 @@ export class LocalClient<T = any> implements IHttpClientStrategy<T> {
             try {
                 const creds = payload as ILoginCredentials;
                 const result = await LocalAuthService.login(creds);
-                const ttl = result.ttl && result.ttl * 60 * 60 * 24 * 7;
+                const ttl = result.ttl && result.ttl * 1000 * 24 * 7;
                 localStorageService.set('auth_token', result.token, ttl);
                 return ResponseAdapter.toResponse(result as T);
             } catch (e: any) {

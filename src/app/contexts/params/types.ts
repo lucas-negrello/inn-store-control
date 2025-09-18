@@ -9,7 +9,7 @@ export interface IAppContext {
     setUser: (user: IUser) => void;
     login: (user: IUser) => Promise<void>;
     logout: () => Promise<void>;
-    checkAuth: () => Promise<void>;
+    checkAuth: () => Promise<boolean>;
 }
 
 export interface IPermissionContext {

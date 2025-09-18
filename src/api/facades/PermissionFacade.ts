@@ -6,7 +6,7 @@ import type {IPermission} from "@/api/models/Permissions.interface.ts";
 
 export class PermissionFacade extends CrudFacade<IPermission> {
     constructor(
-        url: string = 'permission',
+        url: string = 'permissions',
         clientType: TClient = Env.defaultStrategy,
         options: IHttpFacadeOptions = {
             useStorage: false,

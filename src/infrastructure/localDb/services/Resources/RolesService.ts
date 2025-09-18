@@ -6,16 +6,22 @@ import {RoleAdapter} from "@/infrastructure/localDb/adapters/RoleAdapter.ts";
 import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter.ts";
 import {nowIso} from "@/infrastructure/localDb/utils/generalUtils.ts";
 import {RoleRelationshipsService} from "@/infrastructure/localDb/services/Relationships/RoleRelationshipsService.ts";
+import {Env} from "@/config/env.ts";
 
 
-export class RolesService
-    extends RoleRelationshipsService {
+export class RolesService extends RoleRelationshipsService {
+
+    private readonly _useRelationships = Env.localClientLoadRelations;
+
     async create(data: IRole): Promise<IApiSuccess<IRole>> {
         try {
             const entity = RoleAdapter.toEntity(data);
 
             const id = await db.roles.add(entity);
             const created = await db.roles.get(id);
+
+            if (this._useRelationships)
+                return ResponseAdapter.toResponse(await RolesService.getRoleWithAllRelationships(id), 201);
 
             const domain = RoleAdapter.toDomain(created!);
             return ResponseAdapter.toResponse(domain, 201);
@@ -36,6 +42,9 @@ export class RolesService
             const merged: RoleEntity = {...current, ...entity, updated_at: nowIso()};
 
             await db.roles.put(merged);
+
+            if (this._useRelationships)
+                return ResponseAdapter.toResponse(await RolesService.getRoleWithAllRelationships(id));
 
             const updated = await db.roles.get(id);
             const domain = RoleAdapter.toDomain(updated!);
@@ -66,6 +75,9 @@ export class RolesService
             const entity = await db.roles.get(id);
             if (!entity) throw new Error('Role not found');
 
+            if (this._useRelationships)
+                return ResponseAdapter.toResponse(await RolesService.getRoleWithAllRelationships(id));
+
             const domain = RoleAdapter.toDomain(entity);
             return ResponseAdapter.toResponse(domain, 200);
         } catch (error) {
@@ -74,26 +86,38 @@ export class RolesService
         }
     }
 
-    async findBySlug(slug: string): Promise<IApiSuccess<IRole>> {
+    async list(): Promise<IApiSuccess<IRole[]>> {
+        try {
+            const entities = await db.roles.toArray();
+            const domain = entities.map(RoleAdapter.toDomain);
+
+            if (this._useRelationships) {
+                const roleWithRelations: IRole[] = [];
+                for (const entity of entities)
+                    roleWithRelations.push(await RolesService.getRoleWithAllRelationships(entity.id!));
+
+                return ResponseAdapter.toResponse(roleWithRelations, 200);
+            }
+
+            return ResponseAdapter.toResponse(domain, 200);
+        } catch (error) {
+            console.error('Error listing roles:', error);
+            throw error;
+        }
+    }
+
+    static async findBySlug(slug: string): Promise<IApiSuccess<IRole>> {
         try {
             const entity = await db.roles.where('slug').equals(slug).first();
             if (!entity) throw new Error('Role not found');
+
+            if (Env.localClientLoadRelations)
+                return ResponseAdapter.toResponse(await RolesService.getRoleWithAllRelationships(entity.id!));
 
             const domain = RoleAdapter.toDomain(entity);
             return ResponseAdapter.toResponse(domain, 200);
         } catch (error) {
             console.error('Error finding role by slug:', error);
-            throw error;
-        }
-    }
-
-    async list(): Promise<IApiSuccess<IRole[]>> {
-        try {
-            const entities = await db.roles.toArray();
-            const domain = entities.map(RoleAdapter.toDomain);
-            return ResponseAdapter.toResponse(domain, 200);
-        } catch (error) {
-            console.error('Error listing roles:', error);
             throw error;
         }
     }

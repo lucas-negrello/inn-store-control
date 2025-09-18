@@ -1,6 +1,6 @@
 import { AppContext } from "@/app/contexts/params/AppContext";
 import type {IAppProps} from "@app/providers/params/types.ts";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import type {IUser} from "@/api/models/Users.interface.ts";
 import type {IAppContext} from "@app/contexts/params/types.ts";
@@ -24,16 +24,19 @@ export const AppProvider = ({ children }: IAppProps) => {
                 setUser(response.data);
                 setUserId(response.data.id);
                 setIsAuthenticated(true);
+                return true;
             } else {
                 setUser(undefined);
                 setUserId(undefined);
                 setIsAuthenticated(false);
+                return false;
             }
         } catch (error) {
             setUser(undefined);
             setUserId(undefined);
             setIsAuthenticated(false);
             console.log('CheckAuthenticationError:', error);
+            return false;
         } finally {
             setIsLoading(false);
         }
@@ -97,7 +100,7 @@ export const AppProvider = ({ children }: IAppProps) => {
         }
     };
 
-    const contextValue: IAppContext = {
+    const contextValue: IAppContext = useMemo(() => ({
         userId,
         isAuthenticated,
         user,
@@ -107,7 +110,7 @@ export const AppProvider = ({ children }: IAppProps) => {
         login: handleLogin,
         logout: handleLogout,
         checkAuth: checkAuthentication,
-    }
+    }), [checkAuthentication, handleLogin, handleLogout, isAuthenticated, isLoading, user, userId]);
 
     // You can add more global state or functions here as needed
 

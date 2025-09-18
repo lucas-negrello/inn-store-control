@@ -6,19 +6,24 @@ import {db} from "@/infrastructure/localDb/db.ts";
 import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter.ts";
 import {nowIso} from "@/infrastructure/localDb/utils/generalUtils.ts";
 import {UserRelationshipsService} from "@/infrastructure/localDb/services/Relationships/UserRelationshipsService.ts";
+import {Env} from "@/config/env.ts";
 
+export class UsersService extends UserRelationshipsService {
 
+    private readonly _useRelationships = Env.localClientLoadRelations;
 
-export class UsersService
-    extends UserRelationshipsService {
     async create(data: IUser, passwordHash?: string): Promise<IApiSuccess<IUser>> {
         try {
             const entity = UserAdapter.toEntity(data, passwordHash);
 
             const id = await db.users.add(entity);
+
+            if (this._useRelationships)
+                return ResponseAdapter.toResponse(await UsersService.getUserWithAllRelationships(id), 201);
+
             const created = await db.users.get(id);
 
-            const domain = UserAdapter.toDomain(created!);
+            const domain = UserAdapter.toUserSafe(created!);
 
             return ResponseAdapter.toResponse(domain, 201);
         } catch (error) {
@@ -39,8 +44,11 @@ export class UsersService
 
             await db.users.put(merged);
 
+            if (this._useRelationships)
+                return ResponseAdapter.toResponse(await UsersService.getUserWithAllRelationships(id));
+
             const updated = await db.users.get(id);
-            const domain = UserAdapter.toDomain(updated!);
+            const domain = UserAdapter.toUserSafe(updated!);
 
             return ResponseAdapter.toResponse(domain);
         } catch (error) {
@@ -76,7 +84,10 @@ export class UsersService
             const entity = await db.users.get(id);
             if (!entity) throw new Error('User not found');
 
-            const domain = UserAdapter.toDomain(entity);
+            if (this._useRelationships)
+                return ResponseAdapter.toResponse(await UsersService.getUserWithAllRelationships(id));
+
+            const domain = UserAdapter.toUserSafe(entity);
             return ResponseAdapter.toResponse(domain);
         } catch (error) {
             console.error('Error finding user by ID:', error);
@@ -84,26 +95,39 @@ export class UsersService
         }
     }
 
-    async findByEmail(email: string): Promise<IApiSuccess<IUser>> {
+    async list(): Promise<IApiSuccess<IUser[]>> {
         try {
-            const entity = await db.users.where('email').equals(email).first();
-            if (!entity) throw new Error('User not found');
+            const entities: UserEntity[] = await db.users.toArray();
 
-            const domain = UserAdapter.toDomain(entity);
-            return ResponseAdapter.toResponse(domain);
+            if (this._useRelationships){
+                const usersWithRelations: IUser[] = [];
+                for (const entity of entities) {
+                    const user = await UsersService.getUserWithAllRelationships(entity.id!);
+                    usersWithRelations.push(user);
+                }
+                return ResponseAdapter.toResponse(usersWithRelations);
+            }
+
+            const domains: IUser[] = entities.map(UserAdapter.toUserSafe);
+            return ResponseAdapter.toResponse(domains);
         } catch (error) {
-            console.error('Error finding user by email:', error);
+            console.error('Error listing users', error);
             throw error;
         }
     }
 
-    async list(): Promise<IApiSuccess<IUser[]>> {
+    static async findByEmail(email: string): Promise<IApiSuccess<IUser>> {
         try {
-            const entities: UserEntity[] = await db.users.toArray();
-            const domains: IUser[] = entities.map(UserAdapter.toDomain);
-            return ResponseAdapter.toResponse(domains);
+            const entity = await db.users.where('email').equals(email).first();
+            if (!entity) throw new Error('User not found');
+
+            if (Env.localClientLoadRelations)
+                return ResponseAdapter.toResponse(await UsersService.getUserWithAllRelationships(entity.id!));
+
+            const domain = UserAdapter.toUserSafe(entity);
+            return ResponseAdapter.toResponse(domain);
         } catch (error) {
-            console.error('Error listing users', error);
+            console.error('Error finding user by email:', error);
             throw error;
         }
     }

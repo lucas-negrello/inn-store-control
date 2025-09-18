@@ -1,13 +1,33 @@
 import type {BaseIdType, PermissionEntity} from "@/infrastructure/localDb/entities.ts";
-import type {IApiSuccess} from "@/api/interfaces/ApiResponse.interface.ts";
 import {db} from "@/infrastructure/localDb/db.ts";
 import {ensurePivot, nowIso} from "@/infrastructure/localDb/utils/generalUtils.ts";
-import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter.ts";
 import type {IPermission} from "@/api/models/Permissions.interface.ts";
 import {PermissionAdapter} from "@/infrastructure/localDb/adapters/PermissionAdapter.ts";
+import type {IRole} from "@/api/models/Roles.interface.ts";
+import {RoleAdapter} from "@/infrastructure/localDb/adapters/RoleAdapter.ts";
 
 export class RoleRelationshipsService {
-    async attachPermissions(role_id: BaseIdType, permission_ids: BaseIdType[]): Promise<IApiSuccess<null>> {
+    static async getRoleWithAllRelationships(role_id: BaseIdType): Promise<IRole> {
+        try {
+            const role = await db.roles.get(role_id);
+            if (!role) throw new Error('Role not found');
+
+            const [ permissions ] = await Promise.all([
+                this.getPermissions(role_id),
+            ]);
+
+            const domain = RoleAdapter.toDomain(role);
+            return {
+                ...domain,
+                permissions,
+            }
+        } catch (error) {
+            console.error('Error retrieving role with relationships:', error);
+            throw error;
+        }
+    }
+
+    static async attachPermissions(role_id: BaseIdType, permission_ids: BaseIdType[]): Promise<BaseIdType[]> {
         try {
             const role = await db.roles.get(role_id);
             if (!role) throw new Error('Role not found');
@@ -20,14 +40,14 @@ export class RoleRelationshipsService {
                 );
             }
 
-            return ResponseAdapter.toResponse(null, 200, 'Permissions attached to role');
+            return permission_ids;
         } catch (error) {
             console.error('Error attaching permissions to role:', error);
             throw error;
         }
     }
 
-    async detachPermissions(role_id: BaseIdType, permission_ids: BaseIdType[]): Promise<IApiSuccess<null>> {
+    static async detachPermissions(role_id: BaseIdType, permission_ids: BaseIdType[]): Promise<BaseIdType[]> {
         try {
             const role = await db.roles.get(role_id);
             if (!role) throw new Error('Role not found');
@@ -38,20 +58,19 @@ export class RoleRelationshipsService {
                     await db.role_permissions.delete(existing.id!);
             }
 
-            return ResponseAdapter.toResponse(null, 200, 'Permissions detached from role');
+            return permission_ids;
         } catch (error) {
             console.error('Error detaching permissions from role:', error);
             throw error;
         }
     }
 
-    async getPermissions(role_id: BaseIdType): Promise<IApiSuccess<IPermission[]>> {
+    static async getPermissions(role_id: BaseIdType): Promise<IPermission[]> {
         try {
             const pivots = await db.role_permissions.where('role_id').equals(role_id).toArray();
             const permissions = await Promise.all(pivots.map(pivot => db.permissions.get(pivot.permission_id)));
             const filteredPermissions = permissions.filter((perm): perm is PermissionEntity => perm !== undefined);
-            const domain = filteredPermissions.map((perm) => PermissionAdapter.toDomain(perm));
-            return ResponseAdapter.toResponse(domain, 200, 'Role permissions retrieved');
+            return filteredPermissions.map((perm) => PermissionAdapter.toDomain(perm));
         } catch (error) {
             console.error('Error retrieving permissions for role:', error);
             throw error;
