@@ -8,7 +8,7 @@ import {Env} from "@/config/env.ts";
 
 export class AuthFacade extends HttpFacade<unknown> {
     constructor(
-        url: string,
+        url: string = 'auth',
         clientType: TClient = Env.defaultStrategy,
         options?: IHttpFacadeOptions,
     ) {

@@ -9,6 +9,8 @@ import ReportsPage from "@/pages/private/reports/ReportsPage.tsx";
 import {RouteProtection} from "@app/guards/RouteProtection/RouteProtection.tsx";
 import AccountPage from "@/pages/private/account/AccountPage.tsx";
 import AdminPage from "@/pages/private/admin/AdminPage.tsx";
+import {AccountPageProvider} from "@/pages/private/account/AccountPageProvider.tsx";
+import {AdminPageProvider} from "@/pages/private/admin/AdminPageProvider.tsx";
 
 
 export default function () {
@@ -23,7 +25,11 @@ export default function () {
             <Route path='' element={<LayoutPrivate showMenuButton={true}/>}>
                 <Route index element={<DashboardPage />} />
 
-                <Route path="account" element={<AccountPage />} />
+                <Route path="account" element={
+                    <AccountPageProvider>
+                        <AccountPage />
+                    </AccountPageProvider>
+                } />
 
                 <Route path="stock" element={
                     <RouteProtection roles={['admin', 'manager']}>
@@ -51,7 +57,9 @@ export default function () {
 
                 <Route path="admin" element={
                     <RouteProtection roles={['admin']}>
-                        <AdminPage />
+                        <AdminPageProvider>
+                            <AdminPage />
+                        </AdminPageProvider>
                     </RouteProtection>
                 } />
 

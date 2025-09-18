@@ -1,19 +1,15 @@
 import type {IMenuItem} from "@/api/models/Menu.interface.ts";
 import {MenuFacade} from "@/api/facades/MenuFacade.ts";
 
-const client = new MenuFacade('menu', 'local', {
-    storageType: 'session',
-    useStorage: true,
-    cacheTTL: 60*60, // 1 hour
-});
+const client = new MenuFacade();
 
 export const MenuService = {
-    getMenus: () => client.getAll(),
-    getMenuById: (id: number | string) => client.get(id),
-    createMenu: (menu: IMenuItem) => client.post(menu),
-    updateMenu: (id: number | string, menu: IMenuItem) => client.update(id, menu),
-    deleteMenu: (id: number | string) => client.delete(id),
-    getFlatMenu: (withInactive = false) => client.getFlatMenu(withInactive),
-    getMenuTree: (withInactive = false) => client.getMenuTree(withInactive),
-    getMenuTreeByUser: (userId: number | string, withInactive = false) => client.getMenuTreeByUser(userId, withInactive),
+    getMenus: async () => await client.getAll(),
+    getMenuById: async (id: number | string) => await client.get(id),
+    createMenu: async (menu: IMenuItem) => await client.post(menu),
+    updateMenu: async (id: number | string, menu: IMenuItem) => await client.update(id, menu),
+    deleteMenu: async (id: number | string) => await client.delete(id),
+    getFlatMenu: async (withInactive = false) => await client.getFlatMenu(withInactive),
+    getMenuTree: async (withInactive = false) => await client.getMenuTree(withInactive),
+    getMenuTreeByUser: async (userId: number | string, withInactive = false) => await client.getMenuTreeByUser(userId, withInactive),
 }

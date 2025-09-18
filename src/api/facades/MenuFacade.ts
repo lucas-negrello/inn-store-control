@@ -10,9 +10,13 @@ import {ResponseAdapter} from "@/infrastructure/localDb/adapters/ResponseAdapter
 export class MenuFacade extends CrudFacade<IMenuItem> {
     
     constructor(
-        url: string,
+        url: string = 'menus',
         clientType: TClient = Env.defaultStrategy,
-        options?: IHttpFacadeOptions,
+        options: IHttpFacadeOptions = {
+            storageType: 'session',
+            useStorage: true,
+            cacheTTL: 60*60,
+        },
     ) {
         super(url, clientType, options);
     }

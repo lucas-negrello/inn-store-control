@@ -12,10 +12,10 @@ import {
     Chip,
 } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import { useApp } from '@app/hooks/params/useApp';
+import {useAccountPage} from "@/pages/private/account/AccountPageHook.tsx";
 
 export default function AccountPage() {
-    const { user } = useApp();
+    const { user } = useAccountPage();
 
     if (!user) {
         return (

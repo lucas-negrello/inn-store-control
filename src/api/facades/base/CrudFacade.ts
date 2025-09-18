@@ -33,7 +33,7 @@ export class CrudFacade<T extends IBaseModel> extends HttpFacade<T>{
             });
 
     update =
-        (id: number | string, payload: T, url?: string) =>
+        (id: number | string, payload: Partial<T>, url?: string) =>
             this._client.update(url ?? this._url, id, payload).then((res: IApiSuccess<T>) =>
             {
                 this.getStorage()?.set(this._storageKey, res);
