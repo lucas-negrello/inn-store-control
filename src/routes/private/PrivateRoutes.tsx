@@ -11,6 +11,9 @@ import AccountPage from "@/pages/private/account/AccountPage.tsx";
 import AdminPage from "@/pages/private/admin/AdminPage.tsx";
 import {AccountPageProvider} from "@/pages/private/account/AccountPageProvider.tsx";
 import {AdminPageProvider} from "@/pages/private/admin/AdminPageProvider.tsx";
+import {RolesPage} from "@/pages/private/admin/roles/RolesPage.tsx";
+import {PermissionsPage} from "@/pages/private/admin/permissions/PermissionsPage.tsx";
+import {UsersPage} from "@/pages/private/admin/users/UsersPage.tsx";
 
 
 export default function () {
@@ -55,13 +58,18 @@ export default function () {
                     </RouteProtection>
                 } />
 
-                <Route path="admin" element={
+                <Route path="admin/*" element={
                     <RouteProtection roles={['admin']}>
                         <AdminPageProvider>
                             <AdminPage />
+                            <Outlet />
                         </AdminPageProvider>
                     </RouteProtection>
-                } />
+                }>
+                    <Route path="roles" element={<RolesPage />} />
+                    <Route path="permissions" element={<PermissionsPage />} />
+                    <Route path="users" element={<UsersPage />} />
+                </Route>
 
                 <Route path="*" element={<Fallback route={`/`} replace={false} /> } />
             </Route>
