@@ -105,6 +105,8 @@ export interface CellRendererRegistration<T = any> {
 export type TCellRendererMap = keyof typeof CCellRendererMap;
 
 export const CCellRendererMap = {
+    actions: 'actions',
+    defaultCrudActions: 'defaultCrudActions',
     emailLink: 'emailLink',
     statusBadge: 'statusBadge',
 } as const;

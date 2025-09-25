@@ -17,11 +17,13 @@ import {DataTableError} from './states/DataTableError';
 import {cellRenderRegistry} from "@/shared/DataTable/AgGrid/CellRendererRegistry.tsx";
 import {StatusBadgeCell} from "@/shared/DataTable/AgGrid/cellRenderers/StatusBadgeCell.tsx";
 import {EmailLinkCell} from "@/shared/DataTable/AgGrid/cellRenderers/EmailLinkCell.tsx";
+import {ActionsCell} from "@/shared/DataTable/AgGrid/cellRenderers/ActionsCell.tsx";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 cellRenderRegistry.register(StatusBadgeCell);
 cellRenderRegistry.register(EmailLinkCell);
+cellRenderRegistry.register(ActionsCell);
 
 interface InternalState<T> {
     api: GridApi<T> | null;

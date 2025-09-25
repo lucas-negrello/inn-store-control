@@ -2,32 +2,77 @@ import {useAdminPage} from "@/pages/private/admin/AdminPageHook.tsx";
 import {type ColDef, type ValueGetterParams} from "ag-grid-community";
 import type {IUser} from "@/api/models/Users.interface.ts";
 import {useMemo} from "react";
-import {BaseDataTable, buildColumn, dateColumn, withRenderer} from "@/shared/DataTable/AgGrid";
+import {
+    actionsColumn,
+    BaseDataTable,
+    buildColumn,
+    dateColumn,
+    defaultCrudActions, type RegisteredCellRendererParams,
+    withRenderer
+} from "@/shared/DataTable/AgGrid";
+import type {ColAction} from "@/shared/DataTable/AgGrid/cellRenderers/ActionsCell.tsx";
+import {DeleteForever, Edit, Visibility} from "@mui/icons-material";
+import {usePermissions} from "@app/hooks/params/usePermissions.ts";
 
 export const UsersPage = () => {
     const { users, isLoading, errors } = useAdminPage();
+    const { hasAnyPermission } = usePermissions();
 
-    const colDefs = useMemo(() => [
-        buildColumn<IUser>({ headerName: 'ID', valueGetter: (params: ValueGetterParams<IUser>) => params.data?.id ?? 'N/A' }),
-        buildColumn<IUser>({ headerName: 'Nome', valueGetter: (params: ValueGetterParams<IUser>) => params.data?.username ?? 'N/A' }),
+    const canCreate = hasAnyPermission(['create_users']);
+    const canView = hasAnyPermission(['view_users']);
+    const canEdit = hasAnyPermission(['update_users']);
+    const canDelete = hasAnyPermission(['delete_users']);
+
+    const onEdit = (data: IUser, params: RegisteredCellRendererParams<IUser>) => {
+        console.log('Edit User', data, params)
+    };
+    const onView = (data: IUser, params: RegisteredCellRendererParams<IUser>) => {
+        console.log('View User', data, params)
+    };
+    const onDelete = (data: IUser, params: RegisteredCellRendererParams<IUser>) => {
+        console.log('Delete User', data, params)
+    };
+
+    const colDefs = useMemo((): ColDef<IUser>[] => [
+        buildColumn<IUser>({
+            headerName: 'ID',
+            valueGetter: (params: ValueGetterParams<IUser>) => params.data?.id ?? 'N/A',
+            width: 75,
+        }),
+        buildColumn<IUser>({
+            headerName: 'Nome',
+            valueGetter: (params: ValueGetterParams<IUser>) => params.data?.username ?? 'N/A',
+            minWidth: 170,
+        }),
         withRenderer(buildColumn<IUser>({
             headerName: 'Email',
-            valueGetter: (params: ValueGetterParams<IUser>) => params.data?.email
+            valueGetter: (params: ValueGetterParams<IUser>) => params.data?.email,
+            minWidth: 170,
         }), 'emailLink'),
         withRenderer(buildColumn<IUser>({
             headerName: 'Status',
             valueGetter: (params: ValueGetterParams<IUser>) =>
-                params.data?.isActive ? 'Ativo' : 'Inativo'
+                params.data?.isActive ? 'Ativo' : 'Inativo',
+            minWidth: 120,
+            initialWidth: 120,
         }), 'statusBadge'),
         withRenderer(buildColumn<IUser>({
             headerName: 'Cargo',
             valueGetter: (params: ValueGetterParams<IUser>) =>
-                params.data?.roles?.[0]?.name ?? 'N/A'
+                params.data?.roles?.[0]?.name ?? 'N/A',
+            minWidth: 170,
+            initialWidth: 170,
         }), 'statusBadge'),
         dateColumn<IUser>('created_at', 'Criado em'),
-    ], []);
-
-    console.log(users);
+        defaultCrudActions({
+            canEdit,
+            canView,
+            canDelete,
+            onEdit,
+            onView,
+            onDelete,
+        }),
+    ], [ canEdit, canView, canDelete ]);
 
     return (
         <BaseDataTable
@@ -36,13 +81,8 @@ export const UsersPage = () => {
             rowData={users}
             loading={isLoading}
             error={errors}
-            selectionMode="multiple"
-            checkboxSelection
-            persistKey="users-table-v1"
             pagination
-            onRowClick={(row) => console.log('clicked', row)}
-            onSelectionChange={(rows) => console.log('selected', rows)}
-            autoSizeStrategy="fitVisible"
+            autoSizeStrategy="fitAll"
             dense
         />
     );
