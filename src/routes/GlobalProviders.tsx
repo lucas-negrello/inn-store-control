@@ -4,6 +4,7 @@ import {ThemeProvider} from "@app/providers/layout/ThemeProvider.tsx";
 import type {FC, ReactNode} from "react";
 import {AppProvider} from "@app/providers/params/AppProvider.tsx";
 import {PermissionProvider} from "@app/providers/params/PermissionProvider.tsx";
+import {EntityFormRoutingProvider} from "@app/providers/forms/EntityFormRoutingProvider.tsx";
 
 type IGlobalProvidersProps = {
     children: ReactNode;
@@ -16,7 +17,9 @@ const GlobalProviders: FC<IGlobalProvidersProps> = ({children})=> {
                 <LocalDbGate>
                     <AppProvider>
                         <PermissionProvider>
-                            {children}
+                            <EntityFormRoutingProvider>
+                                {children}
+                            </EntityFormRoutingProvider>
                         </PermissionProvider>
                     </AppProvider>
                 </LocalDbGate>
