@@ -3,15 +3,12 @@ import {type ColDef, type ValueGetterParams} from "ag-grid-community";
 import type {IUser} from "@/api/models/Users.interface.ts";
 import {useMemo} from "react";
 import {
-    actionsColumn,
     BaseDataTable,
     buildColumn,
     dateColumn,
     defaultCrudActions, type RegisteredCellRendererParams,
     withRenderer
 } from "@/shared/DataTable/AgGrid";
-import type {ColAction} from "@/shared/DataTable/AgGrid/cellRenderers/ActionsCell.tsx";
-import {DeleteForever, Edit, Visibility} from "@mui/icons-material";
 import {usePermissions} from "@app/hooks/params/usePermissions.ts";
 
 export const UsersPage = () => {

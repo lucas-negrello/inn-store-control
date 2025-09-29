@@ -1,15 +1,16 @@
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {AgGridReact} from 'ag-grid-react';
-import {AllCommunityModule, ModuleRegistry} from 'ag-grid-community';
+import {AllCommunityModule, ModuleRegistry, themeQuartz} from 'ag-grid-community';
 import type {
     ColDef,
     GridApi,
     GridReadyEvent,
     GridOptions,
     SelectionChangedEvent,
-    RowClickedEvent
+    RowClickedEvent,
+    Theme
 } from 'ag-grid-community';
-import {Box, useTheme} from '@mui/material';
+import {Box} from '@mui/material';
 import type {DataTableProps, BaseRow} from './DataTableTypes';
 import {DataTableLoading} from './states/DataTableLoading';
 import {DataTableEmpty} from './states/DataTableEmpty';
@@ -18,6 +19,7 @@ import {cellRenderRegistry} from "@/shared/DataTable/AgGrid/CellRendererRegistry
 import {StatusBadgeCell} from "@/shared/DataTable/AgGrid/cellRenderers/StatusBadgeCell.tsx";
 import {EmailLinkCell} from "@/shared/DataTable/AgGrid/cellRenderers/EmailLinkCell.tsx";
 import {ActionsCell} from "@/shared/DataTable/AgGrid/cellRenderers/ActionsCell.tsx";
+import {useThemeMode} from "@app/hooks/layout/useThemeMode.ts";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -71,9 +73,25 @@ export function BaseDataTable<T extends BaseRow = any>(props: DataTableProps<T>)
         quickFilterText
     } = props;
 
-    const theme = useTheme();
+    const theme = useThemeMode();
+
+    const [themeMode, setThemeMode] = useState<Theme>(themeQuartz
+        .withParams(
+            {
+                browserColorScheme: 'light'
+            }, 'light')
+        .withParams(
+            {
+                browserColorScheme: 'dark'
+            }, 'dark')
+    );
+
     const internalRef = useRef<InternalState<T>>({api: null});
     const gridRef = useRef<AgGridReact<T>>(null);
+
+    useEffect(() => {
+        document.body.dataset.agThemeMode = theme.themeMode === 'light' ? 'light' : 'dark';
+    }, [theme.themeMode]);
 
     const mergedColDefs: ColDef<T>[] = useMemo(() => {
         if (!checkboxSelection || selectionMode === 'none') return colDefs;
@@ -224,6 +242,7 @@ export function BaseDataTable<T extends BaseRow = any>(props: DataTableProps<T>)
                     <div className={themeClass} style={{width: '100%', height: '100%'}}>
                         <AgGridReact<T>
                             ref={gridRef}
+                            theme={themeMode}
                             rowData={rowData}
                             columnDefs={mergedColDefs}
                             gridOptions={gridOptions}
