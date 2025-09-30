@@ -7,3 +7,7 @@ export interface IThemeProps {
 export interface ILayoutProps {
     children: ReactNode;
 }
+
+export interface IMessageProps {
+    children: ReactNode;
+}

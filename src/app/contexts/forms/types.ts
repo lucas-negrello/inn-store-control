@@ -1,14 +1,19 @@
 export type TFormMode = keyof typeof CFormMode;
-export interface IEntityFormRoutingContext {
+export interface IEntityFormRoutingContext<TResult = unknown> {
+    basePath: string;
     mode: TFormMode | null;
     id?: string;
+
     isModalOpen: boolean;
+
     openCreate: () => void;
     openView: (id: string | number) => void;
     openEdit: (id: string | number) => void;
-    closeModal: () => void;
-    setBasePath: (path: string) => void;
-    basePath: string;
+    closeModal: (result: TResult) => void;
+
+    modalResult?: TResult;
+    setModalResult: (result: TResult) => void;
+    clearModalResult: () => void;
 }
 
 export const CFormMode = {

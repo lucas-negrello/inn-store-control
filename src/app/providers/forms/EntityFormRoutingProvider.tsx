@@ -4,12 +4,10 @@ import type {IEntityFormRoutingContext} from "@app/contexts/forms/types.ts";
 import {useCallback, useMemo, useState} from "react";
 import {useLocation, useMatch, useNavigate, useParams} from "react-router-dom";
 
-export const EntityFormRoutingProvider = ({children}: IEntityFormRoutingProviderProps) => {
+export const EntityFormRoutingProvider = ({children, basePath}: IEntityFormRoutingProviderProps) => {
     const navigate = useNavigate();
     const location = useLocation();
     const params = useParams();
-
-    const [basePath, setBasePath] = useState<string>('');
 
     const createMatch = useMatch(`/${basePath}/create`);
     const viewMatch = useMatch(`/${basePath}/view/:id`);
@@ -21,19 +19,33 @@ export const EntityFormRoutingProvider = ({children}: IEntityFormRoutingProvider
 
     const isModalOpen = mode === "create" || mode === "edit";
 
-    const goTo = useCallback((path: string) => navigate(path), [navigate]);
+    const [modalResult, setModalResultState] = useState<unknown>(undefined);
+    const setModalResult = (r?: unknown) => setModalResultState(r);
+    const clearModalResult = () => setModalResultState(undefined);
+
+    const openCreate = useCallback(() => navigate(`/${basePath}/create`), [navigate, basePath]);
+    const openView = useCallback((id: string | number) => navigate(`/${basePath}/view/${id}`), [navigate, basePath]);
+    const openEdit = useCallback((id: string | number) => navigate(`/${basePath}/edit/${id}`), [navigate, basePath]);
+    const closeModal = useCallback((result?: unknown) => {
+        if (typeof result !== "undefined") {
+            setModalResult(result);
+        }
+        navigate(`/${basePath}`)
+    }, [navigate, basePath]);
 
     const value: IEntityFormRoutingContext = useMemo(() => ({
+        basePath,
         mode,
         id,
         isModalOpen,
-        openCreate: () => goTo(`/${basePath}/create`),
-        openView: (id: string | number) => goTo(`/${basePath}/view/${id}`),
-        openEdit: (id: string | number) => goTo(`/${basePath}/edit/${id}`),
-        closeModal: () => goTo(`/${basePath}`),
-        basePath,
-        setBasePath,
-    }), [mode, id, isModalOpen, basePath, setBasePath, goTo]);
+        openCreate,
+        openView,
+        openEdit,
+        closeModal,
+        modalResult,
+        setModalResult,
+        clearModalResult,
+    }), [mode, id, isModalOpen, basePath, openCreate, openView, openEdit, closeModal, modalResult]);
 
     return (
         <EntityFormRoutingContext.Provider value={value}>
