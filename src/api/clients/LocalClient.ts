@@ -109,9 +109,9 @@ export class LocalClient<T = any> implements IHttpClientStrategy<T> {
         try {
             const resource = this._localConfig.resolveResource(url);
             const service = this._localConfig.getService(resource);
-            if (!service || typeof service.getById !== 'function')
+            if (!service || typeof service.findById !== 'function')
                 return this._localConfig.fail('Service not found', 404);
-            return service.getById(id, props);
+            return service.findById(id, props);
         } catch (e: any) {
             return this._localConfig.fail(e?.message || 'Fail on get local resource' , 500);
         }

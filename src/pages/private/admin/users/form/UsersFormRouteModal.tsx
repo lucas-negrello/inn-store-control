@@ -13,32 +13,32 @@ export default function UsersFormRouteModal() {
             const data = await getUser(id);
             return data || undefined;
         }
-    }
-    const onClose = (result?: (void | { saved?: IUser })) => {
-        console.log(result);
-    }
-
-    const onAfterClose = (result?: (void | { saved?: IUser })) => {
-        console.log(result);
+        if (mode === "view" && id) {
+            const data = await getUser(id);
+            return data || undefined;
+        }
     }
 
     return (
         <RouteModal<IUser | undefined, { saved?: IUser } | void>
             title="Usuário"
-            openWhen={['create', 'edit']}
+            openWhen={['create', 'edit', 'view']}
             onOpenData={onOpenData}
-            onClose={onClose}
-            onAfterClose={onAfterClose}
         >
             {({ mode, id, data, loading, error, close}) => {
                 const isCreate = mode === 'create';
+                const isEdit = mode === 'edit';
+                const isView = mode === 'view';
                 const handleSubmit = async (values: IUser) => {
                     if (isCreate) {
                         const saved = await createUser(values);
                         close({ saved: saved || undefined });
-                    } else if (id) {
+                    } else if (id && isEdit) {
                         const saved = await updateUser(id, values);
-                        close({ saved: saved || undefined });
+                        close({saved: saved || undefined});
+                    } else if (id && isView) {
+                        const saved = await getUser(id);
+                        close({saved: saved || undefined});
                     } else {
                         close();
                     }
@@ -50,7 +50,7 @@ export default function UsersFormRouteModal() {
                         defaultValues={data}
                         loading={loading}
                         error={error}
-                        submitLabel={isCreate ? 'Criar' : 'Salvar'}
+                        submitLabel={isCreate ? 'Criar' : isEdit ? 'Salvar' : 'Fechar'}
                         onSubmit={handleSubmit}
                     />
                 );

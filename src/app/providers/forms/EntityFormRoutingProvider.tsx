@@ -2,16 +2,15 @@ import type {IEntityFormRoutingProviderProps} from "@app/providers/forms/types.t
 import {EntityFormRoutingContext} from "@app/contexts/forms/EntityFormRoutingContext.tsx";
 import type {IEntityFormRoutingContext} from "@app/contexts/forms/types.ts";
 import {useCallback, useMemo, useState} from "react";
-import {useLocation, useMatch, useNavigate, useParams} from "react-router-dom";
+import {useMatch, useNavigate, useParams} from "react-router-dom";
 
 export const EntityFormRoutingProvider = ({children, basePath}: IEntityFormRoutingProviderProps) => {
     const navigate = useNavigate();
-    const location = useLocation();
     const params = useParams();
 
     const createMatch = useMatch(`/${basePath}/create`);
-    const viewMatch = useMatch(`/${basePath}/view/:id`);
-    const editMatch = useMatch(`/${basePath}/edit/:id`);
+    const viewMatch = useMatch(`/${basePath}/:id/view`);
+    const editMatch = useMatch(`/${basePath}/:id/edit`);
 
     const id = params.id;
 
@@ -24,8 +23,8 @@ export const EntityFormRoutingProvider = ({children, basePath}: IEntityFormRouti
     const clearModalResult = () => setModalResultState(undefined);
 
     const openCreate = useCallback(() => navigate(`/${basePath}/create`), [navigate, basePath]);
-    const openView = useCallback((id: string | number) => navigate(`/${basePath}/view/${id}`), [navigate, basePath]);
-    const openEdit = useCallback((id: string | number) => navigate(`/${basePath}/edit/${id}`), [navigate, basePath]);
+    const openView = useCallback((id: string | number) => navigate(`/${basePath}/${id}/view`), [navigate, basePath]);
+    const openEdit = useCallback((id: string | number) => navigate(`/${basePath}/${id}/edit`), [navigate, basePath]);
     const closeModal = useCallback((result?: unknown) => {
         if (typeof result !== "undefined") {
             setModalResult(result);

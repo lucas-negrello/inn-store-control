@@ -16,12 +16,12 @@ export class UsersService extends UserRelationshipsService {
         try {
             const entity = UserAdapter.toEntity(data, passwordHash);
 
-            const id = await db.users.add(entity);
+            const id = await db.users.add({...entity, created_at: nowIso(), updated_at: nowIso()});
 
             if (this._useRelationships)
-                return ResponseAdapter.toResponse(await UsersService.getUserWithAllRelationships(id), 201);
+                return ResponseAdapter.toResponse(await UsersService.getUserWithAllRelationships(+id), 201);
 
-            const created = await db.users.get(id);
+            const created = await db.users.get(+id);
 
             const domain = UserAdapter.toUserSafe(created!);
 
@@ -34,7 +34,7 @@ export class UsersService extends UserRelationshipsService {
 
     async update(id: BaseIdType, data: Partial<IUser>): Promise<IApiSuccess<IUser>> {
         try {
-            const current: UserEntity | undefined = await db.users.get(id);
+            const current: UserEntity | undefined = await db.users.get(+id);
             if (!current) throw new Error('User not found');
 
             const user: IUser = UserAdapter.toDomain(current);
@@ -45,9 +45,9 @@ export class UsersService extends UserRelationshipsService {
             await db.users.put(merged);
 
             if (this._useRelationships)
-                return ResponseAdapter.toResponse(await UsersService.getUserWithAllRelationships(id));
+                return ResponseAdapter.toResponse(await UsersService.getUserWithAllRelationships(+id));
 
-            const updated = await db.users.get(id);
+            const updated = await db.users.get(+id);
             const domain = UserAdapter.toUserSafe(updated!);
 
             return ResponseAdapter.toResponse(domain);
@@ -60,13 +60,13 @@ export class UsersService extends UserRelationshipsService {
     async delete(id: BaseIdType, softDelete?: boolean): Promise<IApiSuccess<null>> {
         try {
             if (!softDelete) await Promise.all([
-                db.users.delete(id),
-                db.user_roles.where('user_id').equals(id).delete(),
-                db.user_permissions.where('user_id').equals(id).delete(),
-                db.user_menus.where('user_id').equals(id).delete(),
+                db.users.delete(+id),
+                db.user_roles.where('user_id').equals(+id).delete(),
+                db.user_permissions.where('user_id').equals(+id).delete(),
+                db.user_menus.where('user_id').equals(+id).delete(),
             ]);
             else {
-                const user = await db.users.get(id);
+                const user = await db.users.get(+id);
                 if (!user) throw new Error('User not found');
 
                 await db.users.put({...user!, deleted_at: nowIso()});
@@ -81,11 +81,11 @@ export class UsersService extends UserRelationshipsService {
 
     async findById(id: BaseIdType): Promise<IApiSuccess<IUser>> {
         try {
-            const entity = await db.users.get(id);
+            const entity = await db.users.get(+id);
             if (!entity) throw new Error('User not found');
 
             if (this._useRelationships)
-                return ResponseAdapter.toResponse(await UsersService.getUserWithAllRelationships(id));
+                return ResponseAdapter.toResponse(await UsersService.getUserWithAllRelationships(+id));
 
             const domain = UserAdapter.toUserSafe(entity);
             return ResponseAdapter.toResponse(domain);

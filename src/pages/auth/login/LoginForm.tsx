@@ -56,8 +56,8 @@ export default function LoginForm({ onSubmit, loading, error }: Props) {
 
             <Button
                 type="submit"
-                variant="contained"
-                disabled={loading || isSubmitting || !isDirty || !isValid}
+                variant="outlined"
+                disabled={loading || isSubmitting}
             >
                 {loading || isSubmitting ? "Signing in..." : "Sign in"}
             </Button>

@@ -14,6 +14,7 @@ import {AdminPageProvider} from "@/pages/private/admin/AdminPageProvider.tsx";
 import {RolesPage} from "@/pages/private/admin/roles/RolesPage.tsx";
 import {PermissionsPage} from "@/pages/private/admin/permissions/PermissionsPage.tsx";
 import {UsersPage} from "@/pages/private/admin/users/UsersPage.tsx";
+import UsersFormRouteModal from "@/pages/private/admin/users/form/UsersFormRouteModal.tsx";
 
 
 export default function () {
@@ -68,7 +69,11 @@ export default function () {
                 }>
                     <Route path="roles" element={<RolesPage />} />
                     <Route path="permissions" element={<PermissionsPage />} />
-                    <Route path="users" element={<UsersPage />} />
+                    <Route path="users" element={<UsersPage />} >
+                        <Route path="create" element={<UsersFormRouteModal />} />
+                        <Route path=":id/edit" element={<UsersFormRouteModal />} />
+                        <Route path=":id/view" element={<UsersFormRouteModal />} />
+                    </Route>
                 </Route>
 
                 <Route path="*" element={<Fallback route={`/`} replace={false} /> } />

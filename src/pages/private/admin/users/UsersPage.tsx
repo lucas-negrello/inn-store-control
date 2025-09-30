@@ -14,10 +14,10 @@ import {EntityFormRoutingProvider} from "@app/providers/forms/EntityFormRoutingP
 import {useMessage} from "@app/hooks/layout/useMessage.ts";
 import {Box, Button, Typography} from "@mui/material";
 import { PersonAdd } from "@mui/icons-material";
-import {Outlet} from "react-router-dom";
+import {Outlet, useParams} from "react-router-dom";
 import {useEntityFormRouting} from "@app/hooks/forms/useEntityFormRouting.ts";
 
-export const UsersPage = () => {
+const UsersList = () => {
     const { hasAnyPermission } = usePermissions();
     const { setOpen: displayToast, setMessage } = useMessage();
     const { users, isLoading, errors } = useAdminPage();
@@ -40,15 +40,15 @@ export const UsersPage = () => {
         openCreate();
     }
     const onEdit = useCallback((data: IUser, params: RegisteredCellRendererParams<IUser>) => {
-        console.log('Edit User', data, params)
+        // console.log('Edit User', data, params)
         openEdit(data.id!);
     }, [openEdit]);
     const onView = useCallback((data: IUser, params: RegisteredCellRendererParams<IUser>) => {
-        console.log('View User', data, params)
+        // console.log('View User', data, params)
         openView(data.id!);
     }, [openView]);
     const onDelete = useCallback((data: IUser, params: RegisteredCellRendererParams<IUser>) => {
-        console.log('Delete User', data, params)
+        // console.log('Delete User', data, params)
     }, []);
 
     const colDefs = useMemo((): ColDef<IUser>[] => [
@@ -93,7 +93,7 @@ export const UsersPage = () => {
     ], [ canEdit, canView, canDelete, onEdit, onView, onDelete ]);
 
     return (
-        <EntityFormRoutingProvider basePath="admin/users">
+        <>
             <Box
                 sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}
             >
@@ -120,8 +120,17 @@ export const UsersPage = () => {
                 autoSizeStrategy="fitAll"
                 dense
             />
+        </>
+    );
+}
 
+export const UsersPage = () => {
+    const { userId } = useParams();
+
+    return (
+        <EntityFormRoutingProvider basePath={`${userId}/admin/users`}>
+            <UsersList />
             <Outlet />
         </EntityFormRoutingProvider>
-    );
+    )
 }

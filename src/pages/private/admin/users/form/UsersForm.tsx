@@ -41,9 +41,9 @@ export default function UsersForm(props: UserFormProps) {
     } = useForm<UserFormValues & { password_confirmation?: string }>({
         mode: 'onChange',
         defaultValues: {
-            username: '',
-            email: '',
-            isActive: true,
+            username: defaultValues?.username || '',
+            email: defaultValues?.email || '',
+            isActive: defaultValues?.isActive || true,
             ...defaultValues,
         },
     });
@@ -128,13 +128,11 @@ export default function UsersForm(props: UserFormProps) {
                 <Button
                     type="submit"
                     variant="contained"
-                    disabled={loading || isSubmitting || !isDirty || !isValid}
+                    disabled={loading || isSubmitting || !isValid || (isCreate && !isDirty)}
                 >
                     {submitLabel}
                 </Button>
             </Box>
         </Box>
     );
-
-
 }
